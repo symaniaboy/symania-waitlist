@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>משחק החיים · URU Personal</title>
+<title>משחק החיים · URU Live</title>
 <style>
 /* required styles */
 
@@ -670,7 +670,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 </style>
 <style>
-/* URU Personal · משחק החיים · styles (theme tokens are set as CSS variables by setTheme) */
+/* URU Live · משחק החיים · styles (theme tokens are set as CSS variables by setTheme) */
 .uw{position:relative;width:100%;height:100%;overflow:hidden;font-family:'Heebo','Rubik','IBM Plex Sans Hebrew','Noto Sans Hebrew','Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.4;color:var(--ink);background:var(--land);-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 .uw *{box-sizing:border-box}
 .uw :where(button){font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0;touch-action:manipulation}
@@ -1003,8 +1003,97 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .btn{min-width:48px}
 .uw-sheet{-webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2)}
 
+/* ═════════ GDD v1 · onboarding, quest model, modals/toasts, keyboard-safe fields, service registry, status, debug ═════════ */
+.uw{--err:#b91c1c;--kb:0px;--vvt:0px}.uw[data-theme=night],.uw[data-theme=neon]{--err:#fca5a5}
+.uw [hidden]{display:none!important}
+/* every tap gets a visible response */
+.uw .btn:active:not(:disabled),.uw .card:active,.uw .opt:active,.uw .row button:active,.uw .hb:active{transform:scale(.97);filter:brightness(.96)}
+.uw-layers .btn,.uw-layers .card,.uw-layers .opt{transition:transform .08s,filter .08s}
+/* HUD status chip */
+.hb.stat{position:relative;overflow:visible}.hb.stat .sf{display:grid;place-items:center;margin-top:-4px}
+.hb.stat .eb{position:absolute;left:9px;right:9px;bottom:6px;height:5px;border-radius:3px;background:var(--line);overflow:hidden}.hb.stat .eb i{display:block;height:100%;background:var(--ok);border-radius:3px;transition:width .5s}
+.hb.stat.pop{animation:stpop .5s cubic-bezier(.3,1.6,.5,1)}@keyframes stpop{40%{transform:scale(1.18)}}
+.stfl{position:absolute;top:52px;left:50%;transform:translateX(-50%);white-space:nowrap;padding:3px 10px;border-radius:12px;background:var(--card);color:var(--ink);font-size:14px;font-weight:800;box-shadow:var(--shadow);animation:stfl 1.7s ease-out forwards;pointer-events:none}
+.stfl.up{color:var(--ok)}.stfl.dn{color:var(--err)}@keyframes stfl{0%{opacity:0;transform:translate(-50%,-6px)}15%{opacity:1;transform:translate(-50%,0)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,10px)}}
+.uw-pop.stpop{width:min(330px,calc(100% - 24px))}.stp-h{display:flex;align-items:center;gap:12px;margin-bottom:10px}.stp-h span{display:flex;flex-direction:column}.stp-h b{font-size:16px}.stp-h small{font-size:14px;color:var(--mute)}
+.stp-r{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;margin-top:10px;font-size:15px;font-weight:700}.stp-r u{display:block;height:8px;border-radius:4px;background:var(--line);overflow:hidden}.stp-r u i{display:block;height:100%;background:var(--acc)}
+.stp-n{display:block;font-size:14px;color:var(--mute);margin-top:2px}.stp-b{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.stp-b .btn{padding:0 10px;white-space:normal;line-height:1.2}
+/* quest card: details (main) + next action (pill) */
+.qcard{padding:6px}.qmain{flex:1;min-width:0;display:flex;align-items:center;gap:10px;min-height:56px;text-align:start;border-radius:16px;padding:2px}
+.qgo{width:auto;min-width:48px;height:auto;min-height:52px;padding:6px 12px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:var(--acc);color:var(--onacc);font-weight:800;font-size:14px;max-width:112px;text-align:center;line-height:1.15}
+.qgo .qgl{white-space:normal}.qcard.paused .qgo{background:var(--card2);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}.qcard.paused .qd{color:var(--warn)}
+.uw.has-coach .qgo{animation:qgp 1.4s ease-in-out infinite}@keyframes qgp{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--acc) 30%,transparent)}}
+/* nav: only unlocked items, sized to the count */
+.uw-nav{grid-template-columns:repeat(var(--n,5),1fr)}.uw-nav button.fresh{animation:fresh 1s ease-in-out 3;background:var(--accSoft)}@keyframes fresh{50%{transform:translateY(-4px)}}
+/* non-blocking banner (above the quest card) */
+.uw-banner{display:flex;align-items:center;gap:8px;min-height:52px;padding:6px 6px 6px 8px;padding-inline-start:12px;border-radius:18px;background:var(--card);color:var(--ink);box-shadow:0 0 0 1px var(--line),var(--shadow);font-size:14px;line-height:1.35;animation:sin .25s ease-out}
+.uw-banner .bn-ic{color:var(--acc);flex:none}.uw-banner .bn-t{flex:1}.uw-banner .bn-x{width:48px;height:48px;box-shadow:none;border:0;background:transparent;flex:none}
+/* toasts float above sheets but never take taps */
+.uw-toast{z-index:1200;pointer-events:none}.uw-toast.err .ic{color:var(--err)}
+/* layers: only the top sheet is visible (no stacked popups) */
+.uw-sheetwrap.under{visibility:hidden}
+/* viewport + keyboard: sheets live inside the visible area and above the keyboard, with safe areas */
+.uw-sheetwrap{top:var(--vvt);bottom:var(--kb);transition:bottom .18s}
+.uw-sheet{max-height:min(86%,calc(100% - 16px - env(safe-area-inset-top)))}
+.uw.kb .uw-sheet{max-height:calc(100% - 8px - env(safe-area-inset-top));padding-bottom:0}
+.uw.kb .uw-bottom,.uw.kb .uw-daily,.uw.kb .hb.locate{visibility:hidden}
+.uw-sheet.center{margin:auto max(14px,env(safe-area-inset-right)) auto max(14px,env(safe-area-inset-left));max-height:calc(100% - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom))}
+.uw-sheetwrap.cw{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.uw-sheet{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+/* service icon with logo + fallback */
+.svi{position:relative;display:grid;place-items:center;flex:none;border-radius:30%;background:var(--c);box-shadow:0 3px 8px rgba(0,0,0,.18);overflow:hidden}
+.svi .svf{display:grid;place-items:center}.svi img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#fff}
+.svpin{padding:0;overflow:hidden}.svpin .svi{box-shadow:none}
+.row.svr{gap:12px}.row.svr .btn{flex:none}
+.sv-prev{display:flex;align-items:center;gap:14px;padding:12px;margin:4px 0 8px;border-radius:18px;background:var(--card2)}.sv-prev span{display:flex;flex-direction:column;gap:2px;min-width:0}.sv-prev b{font-size:17px}.sv-prev small{font-size:14px;color:var(--mute)}
+/* fields + inline validation */
+.fld{margin:12px 0}.fld label,.fld .flbl{display:block;font-size:15px;font-weight:700;margin-bottom:6px;color:var(--ink)}.fld .rq{color:var(--err);font-style:normal}
+.fld input,.fld select,.fld textarea{width:100%;min-height:48px;padding:10px 14px;border-radius:14px;border:2px solid var(--line);background:var(--card2);color:var(--ink);font:inherit;font-size:16px;user-select:text;-webkit-user-select:text}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:0;border-color:var(--acc)}
+.fld.err input,.fld.err select,.fld.err textarea{border-color:var(--err)}.fld.ok input,.fld.ok textarea{border-color:var(--ok)}
+.fmsg{display:flex;align-items:center;gap:6px;min-height:20px;margin:6px 2px 0;font-size:14px;color:var(--mute)}.fld.err .fmsg{color:var(--err);font-weight:700}.fld.ok .fmsg{color:var(--ok)}
+.fbtn{width:100%;cursor:pointer}.fld .ms-in{margin:0}
+.shake{animation:shake .4s}@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+/* quest detail */
+.qd-top small{font-size:14px;color:var(--mute);font-weight:600}.qd-top .paused{color:var(--warn)}
+.qd-obj{display:flex;gap:12px;align-items:flex-start;margin-top:8px;padding:12px;border-radius:18px;background:var(--accSoft)}.qd-oi{color:var(--acc);flex:none;margin-top:2px}.qd-obj span{display:flex;flex-direction:column;gap:2px}.qd-obj small{font-size:14px;color:var(--mute);font-weight:700}.qd-obj b{font-size:16px;line-height:1.4}
+.qsteps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.qsteps li{display:flex;align-items:center;gap:12px;min-height:52px;padding:6px 12px;border-radius:16px;background:var(--card2)}
+.qsi{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none;box-shadow:inset 0 0 0 2px var(--line);color:var(--mute);font-size:14px}
+.qs-done .qsi{background:var(--ok);color:#fff;box-shadow:none}.qs-done .qst b{color:var(--mute)}
+.qs-active{box-shadow:inset 0 0 0 2px var(--acc)}.qs-active .qsi{box-shadow:inset 0 0 0 2px var(--acc)}.qsd{width:12px;height:12px;border-radius:50%;background:var(--acc);animation:bob 1.2s ease-in-out infinite}
+.qst{display:flex;flex-direction:column}.qst b{font-size:15px}.qst small{font-size:14px;color:var(--mute)}.qs-active .qst small{color:var(--acc);font-weight:700}
+.qd-hint{display:flex;gap:8px;align-items:flex-start;margin:12px 0;font-size:15px}.qd-hint .ic{color:var(--acc);margin-top:2px}
+.qd-rw{display:grid;grid-template-columns:1fr;gap:6px;margin:10px 0}.qd-rw div{display:flex;justify-content:space-between;gap:12px;padding:8px 12px;border-radius:14px;background:var(--card2)}.qd-rw small{font-size:14px;color:var(--mute);flex:none}.qd-rw b{font-size:14px;text-align:end}
+.qd-ctl{display:grid;grid-template-columns:1fr 1fr;gap:8px}.qd-ctl .btn{white-space:normal;line-height:1.2;padding:4px 10px;min-height:52px}
+.qd-confirm{margin:14px 0;padding:14px;border-radius:18px;background:var(--card2);box-shadow:inset 0 0 0 2px var(--warn)}.qd-confirm p{margin:0 0 8px;font-size:15px}
+/* onboarding coach */
+.uw-coach{position:absolute;inset:0;z-index:20;opacity:0;transition:opacity .2s}.uw-coach.on{opacity:1}
+.cm-spot{position:absolute;border-radius:22px;box-shadow:0 0 0 200vmax rgba(10,14,26,.62),0 0 0 3px var(--acc) inset;transition:all .3s cubic-bezier(.2,.9,.25,1)}
+.cm-scrim{position:absolute;inset:0;background:rgba(10,14,26,.62)}
+.cm-card{position:absolute;inset-inline:max(12px,env(safe-area-inset-left));max-width:520px;margin:0 auto;padding:14px 16px 16px;border-radius:24px;background:var(--card);color:var(--ink);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px;animation:sin .25s ease-out}
+.cm-top{display:flex;align-items:center;justify-content:space-between}.cm-top small{font-size:14px;color:var(--mute);font-weight:700}.cm-x{width:48px;height:48px;box-shadow:none;border:0}
+.cm-who{display:flex;align-items:center;gap:10px}.cm-who b,.cm-t{font-size:19px;font-weight:800}.cm-card p{margin:0;font-size:15px;line-height:1.5}
+.cm-dots{display:flex;gap:6px;justify-content:center;margin:4px 0}.cm-dots i{width:8px;height:8px;border-radius:4px;background:var(--line)}.cm-dots i.on{width:22px;background:var(--acc)}
+.cm-card .tb{display:flex;gap:10px}.cm-card .tb .btn{flex:1}
+/* dialogue */
+.dlg-who{display:flex;align-items:flex-start;gap:10px;margin:4px 0 12px}.dlg-who .svi{margin-top:30px;margin-inline-start:-22px}
+.dlg-line{flex:1;margin:0;padding:12px 14px;border-radius:18px;border-start-start-radius:4px;background:var(--card2);font-size:16px;line-height:1.45;font-weight:600}
+.dlg-opts{display:flex;flex-direction:column;gap:8px}.dlg-opts .opt{color:var(--ink);font-weight:700}.dlg-opts .opt:disabled:not(.on){opacity:.55}
+.dlg-res{display:flex;gap:6px;align-items:center;min-height:24px;margin:10px 0 0;font-size:15px;font-weight:700;color:var(--ok)}
+/* debug */
+.uw-dbgb{position:absolute;inset-inline-start:12px;bottom:calc(242px + env(safe-area-inset-bottom));z-index:780}
+.dbg-pre{margin:0;padding:10px;border-radius:12px;background:var(--card2);font:14px/1.35 ui-monospace,Menlo,monospace;white-space:pre-wrap;max-height:220px;overflow:auto;user-select:text}
+.dbg-g{display:grid;grid-template-columns:1fr 1fr;gap:8px}.dbg-g .btn{padding:0 8px;white-space:normal;line-height:1.2;font-size:14px}
+@media (max-height:680px){.qcard{min-height:60px}.uw-nav button{height:52px}.cm-card p{font-size:15px}}
+.qt .qs{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.uw.has-banner .hb.locate,.uw.has-banner .uw-daily,.uw.has-banner .uw-dbgb{transform:translateY(-62px)}
+.uw.has-banner .leaflet-bottom.leaflet-right{transform:translateY(-62px)}
+
+.uw .svi{flex:none!important;display:grid!important;flex-direction:row;gap:0}
+
 </style>
-<style>html,body{margin:0;height:100%;background:#111}#uru-world-host{position:fixed;inset:0}</style>
+<style>html,body{margin:0;height:100%;background:#111;overflow:hidden}#uru-world-host{position:fixed;top:0;left:0;right:0;height:100vh;height:100dvh}</style>
 </head>
 <body>
 <div id="uru-world-host"></div>
@@ -1023,17 +1112,17 @@ window.URU_WORLD_DATA={"origin":[32.0585,34.76],"q":1e-05,"bbox":[32.0585,34.76,
 
 </script>
 <script>
-/* Symbol Hunter glyph library (arcade-v1), ported from the URU Personal Symbol Hunter component (SymbolsGame.SYMBOL_LIBRARY). paths[i] = symbol, variants[i] = its look-alike decoy. */
+/* Symbol Hunter glyph library (arcade-v1), ported from the URU Live Symbol Hunter component (SymbolsGame.SYMBOL_LIBRARY). paths[i] = symbol, variants[i] = its look-alike decoy. */
 window.URU_SYMBOL_LIBRARY={"id":"arcade-v1","paths":["M5 16h14M6.5 16v2.2M17.5 16v2.2M4 12.5l2-5.5h12l2 5.5V16H4zM7.5 13.5h.01M16.5 13.5h.01","M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.1V16h5v-.1c0-.8.4-1.6 1.1-2.1A6 6 0 0 0 12 3z","M4 8h3.2l2-2.5h5.6l2 2.5H20v11H4zM12 16.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z","M5 4l3 4h8l3-4v10a7 7 0 0 1-14 0zM9.5 13h.01M14.5 13h.01M10.5 16.5h3","M5 19C5 10 10.5 4.5 20 4.5 20 13.5 14.5 19 5 19zM5 19l8.5-8.5","M13 2L4 14h7l-1 8 9-12h-7z","M12 3a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM6 11a6 6 0 0 0 12 0M12 17v4M9 21h6","M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 12h.01","M12 3c3 2 4.5 5 4.5 9l-2 4h-5l-2-4c0-4 1.5-7 4.5-9zM12 10.5h.01M9.5 16l-2 4 3-1.5M14.5 16l2 4-3-1.5","M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7","M12 20.5s-8-5-8-10.7A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 8 2.8c0 5.7-8 10.7-8 10.7z","M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.3l6.6-.8z","M9 18V5l11-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM20 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z","M4 9h12v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM16 11h2a2.5 2.5 0 0 1 0 5h-2M8 3v3M12 3v3","M4 10h16v10H4zM3 7h18v3H3zM12 7v13M12 7c-1.5-3-5-3-5-1s3 1 5 1zM12 7c1.5-3 5-3 5-1s-3 1-5 1z","M12 3.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM12 7.5V21M5 13.5a7 7 0 0 0 14 0M8.5 10.5h7","M12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8","M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z","M12 2.5l6 8h-3l4 6H5l4-6H6zM12 16.5v5","M12 14.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM12 9.5a3 3 0 1 1 0-6 3 3 0 0 1 0 6zM12 20.5a3 3 0 1 1 0-6 3 3 0 0 1 0 6zM9.5 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM20.5 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z","M3 12a9 9 0 0 1 18 0zM12 12v7a2 2 0 0 1-4 0M12 3V2","M3 11l9-7 9 7v10h-6v-6H9v6H3z","M15 7a4 4 0 1 1-3.9 5H3v3h3v3h3v-3h2.1A4 4 0 0 1 15 7zM16 11h.01","M3 12c3-5 9-6 14-2l4-3v10l-4-3c-5 4-11 3-14-2zM15 11h.01"],"variants":["M5 16h14M6.5 16v2.2M17.5 16v2.2M4 12.5l2-5.5h12l2 5.5V16H4zM4 12.5h16M12 7v5.5","M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.1V16h5v-.1c0-.8.4-1.6 1.1-2.1A6 6 0 0 0 12 3zM12 9.5V16","M4 8h3.2l2-2.5h5.6l2 2.5H20v11H4zM12 15.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4zM17 10.8h.01","M5 4l3 4h8l3-4v10a7 7 0 0 1-14 0zM9.5 13h.01M14.5 13h.01M12 15.2v2.6","M5 19C5 10 10.5 4.5 20 4.5 20 13.5 14.5 19 5 19zM5 19l8.5-8.5M9.5 14.5v-4M9.5 14.5h4","M13 2L4 14h7l-1 8 9-12h-7zM8.6 8h6.2","M12 3a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM6 11a6 6 0 0 0 12 0M12 17v4M9 7.5h6M9 10h6","M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM12 12h.01","M12 3c3 2 4.5 5 4.5 9l-2 4h-5l-2-4c0-4 1.5-7 4.5-9zM8 11.5h8M9.5 16l-2 4 3-1.5M14.5 16l2 4-3-1.5","M8 4h8v5a4 4 0 0 1-8 0zM12 13v4M8.5 20h7M10.5 7.5h3","M12 20.5s-8-5-8-10.7A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 8 2.8c0 5.7-8 10.7-8 10.7zM12 16s-3.4-2.2-3.4-4.6A1.8 1.8 0 0 1 12 10.5a1.8 1.8 0 0 1 3.4.9C15.400 13.8 12 16 12 16z","M12.0 2.4L14.6 7.5L20.3 7.2L17.2 12.0L20.3 16.8L14.6 16.5L12.0 21.6L9.4 16.5L3.7 16.8L6.8 12.0L3.7 7.2L9.4 7.5z","M9 18V5l11-2v13M9 9.5l11-2M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM20 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0z","M4 9h12v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5zM16 11h2a2.5 2.5 0 0 1 0 5h-2M10 3v3M4 12.500h12","M4 10h16v10H4zM3 7h18v3H3zM12 7v13M8.5 3.5L12 7l3.5-3.5","M12 3.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM12 7.5V21M5 13.5a7 7 0 0 0 14 0","M12 16.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zM12 2v2.500M12 19.5V22M2 12h2.5M19.5 12H22","M20 14.500A8.500 8.500 0 1 1 9.500 4a6.500 6.500 0 0 0 10.500 10.500zM9.500 12.500h.01M13 16h.01","M12 2.5l7 14H5zM12 16.5v5","M12 9.500a3 3 0 1 1 0-6 3 3 0 0 1 0 6zM12 20.500a3 3 0 1 1 0-6 3 3 0 0 1 0 6zM9.500 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM20.500 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z","M3 12a9 9 0 0 1 18 0zM12 12v7a2 2 0 0 1-4 0M12 3V2M7.5 12c0-4 2-7 4.5-9 2.5 2 4.5 5 4.5 9","M3 11l9-7 9 7v10H3zM10 13h4v4h-4z","M15 7a4 4 0 1 1-3.9 5H3v3h8.1A4 4 0 0 1 15 7zM16 11h.01","M3 12c3-5 9-6 14-2l4-3v10l-4-3c-5 4-11 3-14-2zM9 9.300c1.200 1.700 1.200 3.700 0 5.400"]};
 
 </script>
 <script>
 (function(){
-/* ═══ URU Personal · משחק החיים (Game of Life) · World layer ═══
+/* ═══ URU Live · משחק החיים (Game of Life) · World layer ═══
    Built on Leaflet. Base map = real OpenStreetMap geometry (demo area), rendered as themed vector tiles.
    Everything that moves is drawn on one canvas (life layer); everything you can tap is a DOM element. */
 "use strict";
-const VERSION = "2.0.0-studio";
+const VERSION = "2.1.0-gdd1";
 const TAU = Math.PI * 2;
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -1643,6 +1732,134 @@ const STAGES = [
 const LEVELS = [0, 60, 150, 270, 420, 600, 820, 1080, 1380, 1720, 2100];
 const levelOf = xp => { let l = 1; for (let i = 1; i < LEVELS.length; i++) if (xp >= LEVELS[i]) l = i + 1; return l; };
 
+/* ═════════ GDD v1 · [DATA LAYER] ═════════
+   Pure data: quest model (objective, steps, hint actions, effects), the App/Service Registry, dialogues, onboarding cards
+   and progressive-disclosure rules. No DOM, no game rules here. Logic: 07b_gdd_logic.js · UI: 08b_gdd_ui.js */
+
+/* Step condition specs (evaluated by stepOk() in the logic layer):
+   {flag:"k"} event seen since the quest started/reset · {prog:n} task counter ≥ n · {authed:"keeper"} · {wood:n} · {paintInv:1}
+   {seen:"biz"} arena tab opened · {tourstep:n} · {done:1} task completed · {any:[…]} one of.
+   go = next-action key (see GO_ACTIONS in the logic layer). svc = stable service id from SERVICES (never a logo/name). */
+const QUEST_MODEL = {
+  tour:   { obj: "לעבור עם הדמות על 4 נקודות בשכונה ולסיים את הסיור", effect: "הדמות מכירה את השכונה · נפתחת סריקת החברים", steps: [
+            { he: "לוחצים על 'התחלת הסיור'", c: { flag: "tour" }, go: "tour", lbl: "התחלת הסיור" },
+            { he: "עוברים על 4 הנקודות במפה", c: { tourstep: 4 }, go: "tour", lbl: "המשך הסיור" },
+            { he: "לוחצים 'סיום' ומקבלים פרס", c: { done: 1 }, go: "tour", lbl: "לסיום הסיור" } ] },
+  scan:   { obj: "לסרוק ולבדוק שני מעגלים שונים (למשל חברים ומשפחה)", effect: "רואים מי מהמעגל נמצא קרוב", steps: [
+            { he: "פותחים את הסריקה", c: { flag: "sheet:scan" }, go: "scan", lbl: "פתיחת הסריקה" },
+            { he: "בודקים מעגל ראשון", c: { prog: 1 }, go: "scan", lbl: "לסריקה" },
+            { he: "בודקים מעגל שני", c: { prog: 2 }, go: "scan", lbl: "למעגל השני" } ] },
+  auth1:  { obj: "לשלוח או לקבל אימות ראשון עם אדם מהמעגל", effect: "מסיים את שלב 1 ופותח את בניית הבית", steps: [
+            { he: "בוחרים אדם מהמעגל", c: { any: [{ flag: "person" }, { flag: "sheet:scan" }] }, go: "scan", lbl: "בחירת אדם" },
+            { he: "שולחים 'זה באמת הם?' או 'זה באמת אני'", c: { any: [{ flag: "authsent" }, { flag: "sheet:prove" }] }, go: "scan", lbl: "לשליחת אימות" },
+            { he: "האימות הושלם", c: { done: 1 }, go: "scan", lbl: "להשלמת האימות" } ] },
+  forest: { obj: "להגיע לחורשה בגן מאיר ולזהות את נועה", effect: "נפתח איסוף העצים", steps: [
+            { he: "הולכים לחורשה", c: { flag: "arrive:forest" }, go: "forest", lbl: "ללכת לחורשה" },
+            { he: "מקישים על נועה", c: { done: 1 }, go: "person:noa", lbl: "לנועה" } ] },
+  wood:   { obj: "לאמת את יואב שומר הגן ולאסוף 6 בולי עץ", effect: "יש עצים לגדר ולשוק", steps: [
+            { he: "מאמתים את יואב, שומר הגן", c: { authed: "keeper" }, go: "keeper", lbl: "ליואב" },
+            { he: "אוספים 6 בולי עץ במפה", c: { prog: 6 }, go: "logs", lbl: "לבול העץ הקרוב" } ] },
+  fence:  { obj: "לבנות גדר סביב הבית מ־4 בולי עץ", effect: "הבית מקבל גבול · נפתח השוק", steps: [
+            { he: "יש בתיק 4 בולי עץ", c: { wood: 4 }, go: "logs", lbl: "לאסוף עצים" },
+            { he: "הולכים הביתה", c: { flag: "sheet:home" }, go: "home", lbl: "הביתה" },
+            { he: "בונים את הגדר", c: { done: 1 }, go: "home", lbl: "לבנות גדר" } ] },
+  market: { obj: "לאמת את אבי בשוק ולמכור לו את העצים שנשארו", effect: "מטבעות לקניית צבע", svc: "svc.market", steps: [
+            { he: "הולכים לשוק", c: { flag: "arrive:market" }, go: "market", lbl: "ללכת לשוק" },
+            { he: "מאמתים את אבי המוכר", c: { authed: "seller" }, go: "market", lbl: "לאימות המוכר" },
+            { he: "מוכרים את העצים", c: { done: 1 }, go: "market", lbl: "למכירה" } ] },
+  paint:  { obj: "לקנות פח צבע ולצבוע את הבית בגוון ובגימור שבחרת", effect: "הבית מקבל צבע חדש", svc: "svc.market", steps: [
+            { he: "קונים פח צבע בשוק", c: { paintInv: 1 }, go: "market", lbl: "לשוק" },
+            { he: "בוחרים גוון וגימור בבית", c: { flag: "sheet:home" }, go: "home", lbl: "הביתה" },
+            { he: "צובעים את הבית", c: { done: 1 }, go: "home", lbl: "לצבוע" } ] },
+  furn:   { obj: "להציב 2 פריטי ריהוט בחצר", effect: "מסיים את שלב 2 · נפתחות הזירות והארקייד", steps: [
+            { he: "פריט ראשון בחצר", c: { prog: 1 }, go: "home", lbl: "לבית" },
+            { he: "פריט שני בחצר", c: { prog: 2 }, go: "home", lbl: "לבית" } ] },
+  arenas: { obj: "לפתוח את שלוש הזירות: אנשים, עסקים, הזמנות", effect: "רואים את כל מה שקורה בשכונה", steps: [
+            { he: "זירת האנשים", c: { seen: "people" }, go: "arenas:people", lbl: "לאנשים" },
+            { he: "זירת העסקים והקניות", c: { seen: "biz" }, go: "arenas:biz", lbl: "לעסקים" },
+            { he: "זירת ההזמנות והעבודה", c: { seen: "orders" }, go: "arenas:orders", lbl: "להזמנות" } ] },
+  authArena: { obj: "לאמת שליח, עסק או ספק לפני שעונים לו", effect: "מגביר את האמון בשכונה", svc: "svc.grocery", steps: [
+            { he: "פותחים הזמנה או עסק", c: { any: [{ flag: "sheet:biz" }, { flag: "sheet:order" }] }, go: "arenas:orders", lbl: "להזמנות" },
+            { he: "שולחים בקשת אימות", c: { flag: "authsent" }, go: "arenas:orders", lbl: "לאימות" },
+            { he: "האימות הושלם", c: { done: 1 }, go: "arenas:orders", lbl: "להזמנות" } ] },
+  share:  { obj: "לשתף עדכון קצר עם המעגל המתאים", effect: "המעגל יודע מה שלומך", steps: [
+            { he: "פותחים 'שיתוף עדכון'", c: { flag: "sheet:share" }, go: "share", lbl: "לשיתוף" },
+            { he: "בוחרים מעגל ושולחים", c: { done: 1 }, go: "share", lbl: "לשיתוף" } ] },
+  arcade: { obj: "ללכת לנקודת הארקייד בכיכר ולפתוח את כרטיס האתגר", effect: "נפתחים אתגרים קצרים", steps: [
+            { he: "הולכים לנקודת הארקייד", c: { flag: "arcade" }, go: "arcade1", lbl: "לארקייד" },
+            { he: "פותחים את כרטיס האתגר", c: { done: 1 }, go: "arcade1", lbl: "לארקייד" } ] },
+  challenge: { obj: "להשלים אתגר קצר אחד", effect: "מטבעות ונקודות מהארקייד", steps: [
+            { he: "בוחרים אתגר", c: { flag: "sheet:arcade" }, go: "arcade1", lbl: "לארקייד" },
+            { he: "משלימים את האתגר", c: { done: 1 }, go: "arcade1", lbl: "לאתגר" } ] },
+  progress: { obj: "להשלים 2 אתגרים שונים", effect: "מסיים את שלב 4 · נפתחים ביקורים", steps: [
+            { he: "אתגר ראשון", c: { prog: 1 }, go: "arcade1", lbl: "לארקייד" },
+            { he: "אתגר שני", c: { prog: 2 }, go: "arcade1", lbl: "לארקייד" } ] },
+  visit:  { obj: "להיכנס לעולם של נועה במצב ביקור", effect: "רואים איך חברים בונים", steps: [
+            { he: "פותחים את הכרטיס של נועה", c: { flag: "person:noa" }, go: "person:noa", lbl: "לנועה" },
+            { he: "נכנסים לעולם שלה", c: { done: 1 }, go: "visit", lbl: "לביקור" } ] },
+  viewProg: { obj: "לראות את השלבים והפעילות של נועה", effect: "השראה לשלבים הבאים", steps: [
+            { he: "פותחים 'ההתקדמות שלה'", c: { done: 1 }, go: "fprog", lbl: "להתקדמות שלה" } ] },
+  connect: { obj: "להשאיר מתנה לנועה ולחזור הביתה", effect: "מסיים את כל חמשת השלבים", steps: [
+            { he: "משאירים מתנה", c: { flag: "gift" }, go: "fgift", lbl: "למתנה" },
+            { he: "חוזרים הביתה", c: { done: 1 }, go: "leave", lbl: "הביתה" } ] }
+};
+
+/* ───────── App / Service Registry (fictional, generic neighbourhood services; no real brands or logos) ─────────
+   id is the stable key used by quests, businesses, orders and the phone-apps neighbourhood. name/logo are display only.
+   icon = built-in line icon (also the fallback when a custom logo is missing or fails to load). */
+const SVC_CATS = { local: "שירותים בשכונה", shopping: "קניות ומשלוחים", streaming: "צפייה", games: "משחקים" };
+const SERVICES_DEFAULT = [
+  { id: "svc.cafe",     name: "קפה לימון",        cat: "local", icon: "cup",     col: "#b45309" },
+  { id: "svc.bakery",   name: "מאפיית השכונה",     cat: "local", icon: "bread",   col: "#a16207" },
+  { id: "svc.market",   name: "שוק הכרמל",         cat: "local", icon: "stall",   col: "#15803d" },
+  { id: "svc.pharm",    name: "בית מרקחת הגן",     cat: "local", icon: "cross",   col: "#be123c" },
+  { id: "svc.books",    name: "ספרי הכיכר",        cat: "local", icon: "book",    col: "#4338ca" },
+  { id: "svc.florist",  name: "פרחי השדרה",        cat: "local", icon: "flower",  col: "#a21caf" },
+  { id: "svc.grocery",  name: "המכולת של השכונה",  cat: "local", icon: "scooter", col: "#0f766e" },
+  { id: "svc.laundry",  name: "מכבסת השכונה",      cat: "local", icon: "box",     col: "#0369a1" },
+  { id: "svc.print",    name: "בית הדפוס של דוד",  cat: "local", icon: "doc",     col: "#475569" },
+  { id: "svc.office",   name: "המשרד בשרונה",      cat: "local", icon: "brief",   col: "#4f46e5" },
+  { id: "app.easybuy",  name: "קנייה קלה",         cat: "shopping", icon: "bag",  col: "#b45309" },
+  { id: "app.clickmkt", name: "מרקט בקליק",        cat: "shopping", icon: "bag",  col: "#c2410c" },
+  { id: "app.deliver",  name: "משלוחון",           cat: "shopping", icon: "scooter", col: "#0369a1" },
+  { id: "app.watchplus",name: "צפייה+",            cat: "streaming", icon: "film", col: "#b91c1c" },
+  { id: "app.movienight",name: "ערב סרט",          cat: "streaming", icon: "film", col: "#1e40af" },
+  { id: "app.clipon",   name: "קליפון",            cat: "streaming", icon: "play", col: "#be123c" },
+  { id: "app.chessfr",  name: "שחמט חברים",        cat: "games", icon: "arcade", col: "#15803d" },
+  { id: "app.colors",   name: "ממתקי צבעים",       cat: "games", icon: "arcade", col: "#7c3aed" },
+  { id: "app.wordday",  name: "מילה ביום",         cat: "games", icon: "book",   col: "#0f766e" },
+  { id: "app.cards",    name: "זירת קלפים",        cat: "games", icon: "arcade", col: "#1d4ed8" }
+];
+/* which service each existing business / order belongs to (logic keys only) */
+const SVC_OF = { cafe: "svc.cafe", bakery: "svc.bakery", market: "svc.market", pharm: "svc.pharm", books: "svc.books", florist: "svc.florist",
+  order: "svc.grocery", meeting: "svc.office", supplier: "svc.print", laundry: "svc.laundry" };
+
+/* ───────── dialogues: choices with felt consequences (energy, trust, coins, speech, walk speed) ───────── */
+const DIALOGUES = {
+  checkin: { who: "me", line: "רגע לפני שממשיכים: איך אנחנו מרגישים היום?", opts: [
+    { he: "מלא/ת אנרגיה!", fx: { energy: 15 }, say: "יאללה! היום הולכים מהר", res: "האנרגיה עלתה · הדמות הולכת מהר יותר" },
+    { he: "קצת עייף/ה", fx: { energy: -10 }, say: "אז בקצב רגוע. נעשה משימה קצרה", res: "האנרגיה ירדה · הדמות הולכת לאט יותר" },
+    { he: "בוא/י נתחיל במשימה", fx: { energy: 5 }, act: "quest", say: "מעולה, מתחילים!", res: "יוצאים ישר למשימה הבאה" } ] },
+  door: { who: "courier", svc: "svc.grocery", line: "היי, זה עומר מהמכולת. יש לי משלוח בשבילך. אפשר לפתוח?", opts: [
+    { he: "רגע, לאמת קודם", fx: { trust: 10, coins: 5 }, act: "authCourier", say: "עכשיו בטוח לפתוח", res: "האמון בשכונה עלה · +5 מטבעות" },
+    { he: "לפתוח מיד", fx: { trust: -10, energy: -5 }, say: "רגע… לא בדקנו שזה באמת הוא. בפעם הבאה נאמת קודם", res: "האמון ירד · הדמות מודאגת" },
+    { he: "שישאיר ליד הדלת", fx: { trust: 2 }, say: "בסדר, אאסוף אחר כך", res: "בחירה זהירה · שינוי קטן" } ] },
+  neighbor: { who: "gal", line: "היי! אפשר עזרה קטנה לסחוב עציצים לגינה של הבניין?", opts: [
+    { he: "בשמחה!", fx: { energy: -10, trust: 10, coins: 10 }, say: "איזה כיף לעזור. גל חייכה", res: "האמון עלה · +10 מטבעות · קצת עייפות" },
+    { he: "לא עכשיו, יש לי משימה", fx: { energy: 0 }, act: "quest", say: "בסדר, חוזרים למשימה", res: "ממשיכים במשימה · בלי שינוי" } ] }
+};
+
+/* ───────── onboarding: three short cards (< 30 s), ends with a guided first action ───────── */
+const ONBOARDING = [
+  { k: "who",  spot: "me",    t: n => "זו הדמות שלך, " + n, p: "היא גרה במפת השכונה, הולכת לאן שתקישו ומגיבה לבחירות שלך." },
+  { k: "goal", spot: "quest", t: () => "המטרה: לבנות חיים בשכונה", p: "פוגשים אנשים, בונים בית ומאמתים עם מי מדברים. משימה ראשונה: סיור היכרות קצר (4 נקודות)." },
+  { k: "act",  spot: "qgo",   t: () => "הפעולה הראשונה", p: "לחצו 'התחלת הסיור'. הכפתור הזה בכרטיס המשימה תמיד מראה מה עושים עכשיו." }
+];
+
+/* ───────── progressive disclosure: nav items appear when they become useful ───────── */
+const NAV_UNLOCK = { scan: null, home: null, settings: null, compass: "scan", arenas: "furn" };   /* null = always; else task id that unlocks it */
+const DAILY_UNLOCK = "tour";
+
 /* ───────── icons (24×24 line icons, no fingerprints anywhere) ───────── */
 const IC = {
   clock:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2", map:"M9 4L3 6.5v13.5l6-2.5 6 2.5 6-2.5V4l-6 2.5zM9 4v13.5M15 6.5V20",
@@ -1689,7 +1906,8 @@ let S = DEF();
 let COINS = 0;
 const EV = {}; function on(n, f){ (EV[n] = EV[n] || []).push(f); } function emit(n, d){ (EV[n] || []).forEach(f => { try{ f(d); }catch(e){} });
   try{ if (OPT.onEvent) OPT.onEvent(n, d); }catch(e){} try{ ROOT && ROOT.dispatchEvent(new CustomEvent("uruworld:" + n, { detail: d, bubbles: true })); }catch(e){} }
-function save(){ if (ALIVE && ME.ready) S.me = { x: ME.p.x, y: ME.p.y }; store.set(KEY, S); }
+let NOSAVE = false;   /* set by debug.reset(): nothing is written back until the next load */
+function save(){ if (NOSAVE) return; if (ALIVE && ME.ready) S.me = { x: ME.p.x, y: ME.p.y }; store.set(KEY, S); }
 function loadState(){ const s = store.get(KEY, null); S = Object.assign(DEF(), s || {}); S.set = Object.assign(DEF().set, S.set || {}); S.set.show = Object.assign(DEF().set.show, S.set.show || {});
   S.home = Object.assign(DEF().home, S.home || {}); S.inv = Object.assign(DEF().inv, S.inv || {}); S.earned = Object.assign(DEF().earned, S.earned || {});
   const c = parseInt(localStorage.getItem(COIN_KEY) || "0", 10); COINS = isNaN(c) ? 0 : c; }
@@ -1759,6 +1977,7 @@ function walkTo(target, cb, opts){ opts = opts || {}; const d = dist(ME.p, targe
   let len = 0; for (let i = 1; i < path.length; i++) len += dist(path[i - 1], path[i]);
   ME.path = path; ME.i = 1; ME.cb = cb || null; ME.sp = clamp(len / 6.5, 18, 120); ME.idle = 0; FOLLOW = true;
   if (RM && S.set.motion){ ME.sp = clamp(len / 3, 30, 400); }
+  ME.sp *= energySpeed();   /* GDD 4.2: the character's energy is felt in its walking pace */
   if (len > 60 && !opts.quiet) say(pick(["יוצאים לדרך!", "בדרך!", "הולכים לשם", "קדימה!"]), 1400);
   emit("walk", { to: target, meters: Math.round(len) }); }
 function stepMe(dt){ if (!ME.path) return; let rem = ME.sp * dt; const p0 = ME.p;
@@ -1975,7 +2194,7 @@ function buildMarkers(){ for (const k in MK) MK[k].m.remove(); for (const k in M
   if (sh.biz){ mkMarker("market", PLACES.market.at, placeHTML("stall", CAT.biz, "שוק הכרמל"), { kind: "biz", pri: 7, label: "שוק הכרמל", anchorY: 124, tap: () => goAct(PLACES.market.at, openMarket) });
     mkMarker("cafe", PLACES.cafe.at, placeHTML("cup", CAT.biz, "קפה לימון"), { kind: "biz", pri: 3, label: "קפה לימון", anchorY: 120, tap: () => openBiz("cafe") });
     mkMarker("bakery", PLACES.bakery.at, placeHTML("bread", CAT.biz, "מאפיית השכונה"), { kind: "biz", pri: 3, label: "מאפיית השכונה", anchorY: 110, tap: () => openBiz("bakery") });
-    for (const b of BUSINESSES) if (b.extra) mkMarker(b.id, PLACES[b.place].at, placeHTML(b.icon, CAT.biz, b.he), { kind: "biz", pri: 2.5, label: b.he + " · " + b.cat, tap: () => openBiz(b.id) }); }
+    for (const b of BUSINESSES) if (b.extra){ const sv = svc(SVC_OF[b.id]); mkMarker(b.id, PLACES[b.place].at, sv.logo ? `<span class="pin svpin" style="--c:${CAT.biz}">${svcIcon(sv, 40)}</span>${lbl(sv.name)}` : placeHTML(b.icon, CAT.biz, sv.name), { kind: "biz", pri: 2.5, label: sv.name + " · " + b.cat, tap: () => openBiz(b.id) }); } }
   if (sh.orders){ mkMarker("office", PLACES.office.at, placeHTML("brief", CAT.order, "המשרד"), { kind: "order", pri: 3, label: "המשרד בשרונה", anchorY: 118, tap: () => openOrder("meeting") });
     mkMarker("laundry", PLACES.laundry.at, placeHTML("box", CAT.order, "מכבסה · מוכן"), { kind: "order", pri: 2.6, label: "איסוף מהמכבסה", anchorY: 110, tap: () => openOrder("laundry") });
     const cv = MOVERS.courier; mkMarker("courier", cv ? cv.p : PLACES.market.at, placeHTML("scooter", CAT.order, "עומר · שליח"), { kind: "order", pri: 5, label: "השליח עומר", tap: () => openOrder("order") }); }
@@ -2043,13 +2262,131 @@ const HINTS = { tour: "בוא/י נעשה סיור קצר בשכונה", scan: "
   fence: "יש לנו מספיק עצים לגדר", market: "בשוק אפשר למכור את העצים שנשארו", paint: "איזה צבע יתאים לבית?", furn: "חסר לנו ספסל בגינה", arenas: "בוא/י נציץ בזירות של היום", authArena: "השליח בדרך, כדאי לאמת לפני שפותחים",
   share: "אפשר לעדכן את המעגל", arcade: "יש נקודת ארקייד בכיכר דיזנגוף", challenge: "אתגר קצר בארקייד?", progress: "עוד אתגר אחד ונתקדם", visit: "נועה הזמינה אותנו לבקר", viewProg: "בוא/י נראה מה נועה בנתה", connect: "אפשר להשאיר לנועה מתנה" };
 let IDLE_N = 0;
-function idleHint(){ IDLE_N++; if (IDLE_N % 2 === 0 && proactive()) return; const t = activeTask(); if (!t){ say("כל השלבים הושלמו. העולם שלך חי ונושם", 2800); return; } ME.look = (Math.random() - .5) * 2; say(HINTS[t.id] || t.desc, 3000); }
+function idleHint(){ if (ONB || MODAL) return; { const t0 = activeTask(); if (t0 && gdd().paused[t0.id]) return; } IDLE_N++; if (IDLE_N % 2 === 0 && proactive()) return; const t = activeTask(); if (!t){ say("כל השלבים הושלמו. העולם שלך חי ונושם", 2800); return; } ME.look = (Math.random() - .5) * 2; const qm = questModel(t.id); say(qm && qm.hint ? "הצעד הבא: " + qm.hint.text : HINTS[t.id] || t.desc, 3000, qm && qm.hint ? { label: qm.hint.label, fn: () => questNext(t.id) } : null); }
 function tapMe(){ jump(); ME.happy = 1.5; ME.wave = .9; ME.idle = 0; openCharMenu(); }
 function onMapTap(e){ if (POP){ closePop(); return; } if (TOUR) return;
   const q = e.containerPoint, sc = VIEW.sc || 1; if (ME.q && Math.abs(q.x - ME.q.x) < 22 * sc + 8 && q.y < ME.q.y + 10 && q.y > (ME.badgeY != null ? ME.badgeY - 18 : ME.q.y - 80 * sc)){ tapMe(); return; }
   if (CH && CH.kind === "route"){ /* fine: free walking during the route challenge */ }
   const p = fromLL(e.latlng); const [S0, W0, N0, E0] = D.bbox; if (e.latlng.lat < S0 || e.latlng.lat > N0 || e.latlng.lng < W0 || e.latlng.lng > E0){ say("זה מחוץ לעולם הדמו", 1500); return; }
   ME.look = q.x < ME.q.x ? -1 : 1; walkTo(p); }
+
+/* ═════════ GDD v1 · [LOGIC LAYER] ═════════
+   Game rules on top of the data layer: uniform quest model, step evaluation, next action, reset / pause / unstuck
+   (soft-lock prevention), character status (energy, trust), dialogue effects and the service registry store.
+   Calls UI only through a few named hooks (questCard, gddRefresh, hudStatus, toast, say). */
+const GDD_DEF = () => ({ onb: 0, onbStep: 0, flags: {}, qs: {}, tourMax: { t: 0, n: 0 }, paused: {}, energy: 70, trust: 50, dlg: {}, unlocked: {}, firstWin: 0, help: {} });
+function gdd(){ if (!S.gdd) S.gdd = GDD_DEF(); else S.gdd = Object.assign(GDD_DEF(), S.gdd); return S.gdd; }
+const GDD_LOG = [];   /* last events, shown in the debug panel */
+function gddFlag(k, extra){ const g = gdd(); g.flags[k] = Date.now(); GDD_LOG.unshift(hm() + " · " + k); GDD_LOG.length = Math.min(GDD_LOG.length, 12); save(); gddChanged(); }
+let GDD_RAF = 0; function gddChanged(){ cancelAnimationFrame(GDD_RAF); GDD_RAF = requestAnimationFrame(() => { if (!ALIVE) return; try{ questCard(); gddRefresh(); navDisclose(); }catch(e){} }); }
+
+/* quest start = when the previous task was completed, or the last reset of this quest (flags before that do not count) */
+function questStart(id){ const all = allTasks(), i = all.findIndex(t => t.id === id), prev = i > 0 ? all[i - 1] : null; return Math.max(prev && S.done[prev.id] ? S.done[prev.id] : 0, gdd().qs[id] || 0); }
+function stepOk(t, c){ const g = gdd(), st = questStart(t.id), fl = k => (g.flags[k] || 0) >= st && (g.flags[k] || 0) > 0;
+  if (S.done[t.id]) return true;
+  if (c.any) return c.any.some(x => stepOk(t, x));
+  if (c.flag) return fl(c.flag);
+  if (c.prog != null) return (S.prog[t.id] || 0) >= c.prog;
+  if (c.authed) return !!S.authed[c.authed];
+  if (c.wood != null) return S.inv.wood >= c.wood;
+  if (c.paintInv) return S.inv.paint > 0;
+  if (c.seen) return !!S.seenArena[c.seen];
+  if (c.tourstep != null) return g.tourMax.t >= st && g.tourMax.n >= c.tourstep;
+  return false; }
+/* the uniform quest unit: id, title, objective, steps (done/active/pending), hint + next action, reward/effect, unlocks */
+function questModel(id){ const t = allTasks().find(x => x.id === id); if (!t) return null; const m = QUEST_MODEL[id] || { obj: t.desc, effect: "", steps: [{ he: t.desc, c: { done: 1 }, go: t.go, lbl: "קח אותי" }] };
+  const done = !!S.done[id]; let act = -1;
+  const steps = m.steps.map((s, i) => { const ok = done || stepOk(t, s.c); let state = ok ? "done" : "pending"; if (!ok && act < 0){ act = i; state = "active"; } return { he: s.he, state, go: s.go, lbl: s.lbl }; });
+  const all = allTasks(), i = all.findIndex(x => x.id === id), nx = all[i + 1], st = STAGES.find(s => s.id === t.stage);
+  const unlocks = !nx ? "סיום כל חמשת השלבים" : nx.stage !== t.stage ? "שלב " + nx.stage + " · " + STAGES.find(s => s.id === nx.stage).he : "המשימה הבאה: " + nx.he;
+  const a = act >= 0 ? steps[act] : null;
+  return { id, title: t.he, stage: t.stage, stageTitle: st.he, objective: m.obj, steps, active: act, doneCount: steps.filter(s => s.state === "done").length,
+    hint: a ? { text: a.he, label: a.lbl || "קח אותי", go: a.go } : null, reward: { xp: t.xp, coins: t.coins }, effect: m.effect, unlocks, svc: m.svc || null,
+    need: t.need || 0, prog: Math.min(S.prog[id] || 0, t.need || 0), done, paused: !!gdd().paused[id], canDo: canDo(id) }; }
+
+/* next-action dispatcher (keys used by QUEST_MODEL.go) */
+function nearestLog(){ let best = -1, bd = 1e18; (S.logs || []).forEach((l, i) => { if (l.got) return; const d = dist(ME.p, l); if (d < bd){ bd = d; best = i; } }); return best; }
+const GO_ACTIONS = {
+  tour: () => { if (TOUR){ const f = TOUR.el.querySelector("[data-tour=next]"); f && f.focus(); return; } startTour(); },
+  scan: () => openScan(), forest: () => goAct(PLACES.forest.at, arriveForest),
+  "person:noa": () => { const p = PEOPLE[0], at = MOVERS[p.id] ? MOVERS[p.id].p : p.at; goAct(at, () => openPerson(p), 24); },
+  keeper: () => goAct(NPCS.keeper.at, openKeeper, 14),
+  logs: () => { if (!S.authed.keeper){ goAct(NPCS.keeper.at, openKeeper, 14); return; } let i = nearestLog(); if (i < 0){ ensureFeasible(activeTask() ? activeTask().id : "wood"); i = nearestLog(); } if (i < 0){ goAct(PLACES.home.at, openHome); return; }
+    const l = S.logs[i]; goAct(l, () => collectLog(i), 10); say("הולכים לבול העץ הקרוב", 1800); },
+  home: () => goAct(PLACES.home.at, openHome), market: () => goAct(PLACES.market.at, openMarket),
+  "arenas:people": () => openArenas("people"), "arenas:biz": () => openArenas("biz"), "arenas:orders": () => openArenas("orders"),
+  share: () => openShare(), arcade1: () => goAct(PLACES.arcade1.at, () => openArcade("arcade1")),
+  visit: () => { if (VISIT) return; openPerson(PEOPLE[0]); }, fprog: () => { if (VISIT) openFriendWorld(); else openPerson(PEOPLE[0]); },
+  fgift: () => { if (VISIT) openGift(); else openPerson(PEOPLE[0]); }, leave: () => { if (VISIT) leaveVisit(); }
+};
+function questNext(id){ const m = questModel(id || (activeTask() || {}).id); if (!m || !m.hint) { openQuests(); return; } if (m.paused) pauseQuest(m.id, false);
+  ensureFeasible(m.id); const f = GO_ACTIONS[m.hint.go]; closeAll(); emit("questnext", { id: m.id, go: m.hint.go }); if (f) f(); else questGo(allTasks().find(x => x.id === m.id)); }
+
+/* ───────── soft-lock prevention ───────── */
+/* if the player can no longer finish the active quest with what they have, the world helps (once per need) and says so */
+function ensureFeasible(id){ const msgs = []; if (!id || S.done[id]) return "";
+  if (id === "wood" && S.authed.keeper){ const left = (S.logs || []).filter(l => !l.got).length; if (left + (S.prog.wood || 0) < 6){ S.logs.forEach(l => l.got = 0); S.prog.wood = 0; msgs.push("בולי העץ חזרו לחורשה"); } }
+  if (id === "fence" && !S.home.fence && S.inv.wood < 4 && (S.logs || []).filter(l => !l.got).length + S.inv.wood < 4){ S.inv.wood = 4; msgs.push("יואב הביא לך עוד עצים לגדר"); }
+  if (id === "market" && S.inv.wood <= 0){ S.inv.wood = 2; msgs.push("נשארו לך 2 בולי עץ למכירה"); }
+  if (id === "paint" && !S.inv.paint && COINS < 30){ S.inv.paint = 1; msgs.push("אבי מהשוק נתן לך פח צבע"); }
+  if (id === "furn" && (S.home.furn || []).length < 2){ const cheap = Math.min(...Object.values(FURN).map(f => f.price)); if (COINS < cheap){ addCoins(cheap - COINS + 5, "life"); msgs.push("קיבלת מטבעות לפריט ריהוט"); } }
+  if (!msgs.length) return ""; save(); buildMarkers(); questCard(); const s2 = msgs.join(" · "); toast(ic("gift", 20) + " " + esc(s2), "ok"); emit("softlock", { id, help: s2 }); return s2; }
+function resetQuest(id){ const t = allTasks().find(x => x.id === id); if (!t || S.done[id]) return false; if (TOUR) endTour(true); if (FS) closeFS(); closeAll(); ME.path = null; ME.cb = null;
+  S.prog[id] = 0; const g = gdd(); g.qs[id] = Date.now(); delete g.paused[id];
+  if (id === "scan") S.scanned = {}; if (id === "arenas") S.seenArena = {}; if (id === "progress" || id === "challenge") { /* challenge records stay as history; the counter restarts */ }
+  if (id === "wood"){ S.inv.wood = 0; (S.logs || []).forEach(l => l.got = 0); }
+  if (id === "furn") S.prog.furn = 0;
+  if (id === "tour") g.tourMax = { t: 0, n: 0 };
+  save(); ensureFeasible(id); buildMarkers(); questCard(); gddChanged(); play("soft"); toast(ic("check", 20) + " המשימה <b>" + esc(t.he) + "</b> אופסה · מתחילים מהצעד הראשון", ""); emit("questreset", { id }); return true; }
+function pauseQuest(id, on){ const g = gdd(); if (on) g.paused[id] = Date.now(); else delete g.paused[id]; save(); questCard(); gddChanged(); emit("questpause", { id, on: !!on });
+  toast(on ? "המשימה הושהתה. אפשר לחזור אליה בכל רגע מכרטיס המשימה" : "ממשיכים במשימה", ""); }
+function unstuck(){ if (TOUR) endTour(true); if (FS) closeFS(); closeAll(); if (VISIT) leaveVisit(); ME.path = null; ME.cb = null; ME.p = { ...PLACES.home.at }; save();
+  if (MAP) MAP.setView(toLL(ME.p.x, ME.p.y), 17.25, { animate: false }); const t = activeTask(); if (t) ensureFeasible(t.id); buildMarkers(); questCard(); say("חזרנו הביתה. אפשר להמשיך מכאן", 2400); emit("unstuck", {}); }
+
+/* ───────── character status: energy & trust (felt in walk speed, speech and HUD) ───────── */
+const energySpeed = () => .8 + clamp(gdd().energy, 0, 100) / 100 * .45;
+function moodOf(){ const e = gdd().energy, tr = gdd().trust; return e >= 66 && tr >= 45 ? "happy" : e < 35 || tr < 30 ? "low" : "ok"; }
+function applyFx(fx, src){ const g = gdd(), d = {}; if (!fx) return d;
+  if (fx.energy){ const b = g.energy; g.energy = clamp(g.energy + fx.energy, 0, 100); d.energy = g.energy - b; }
+  if (fx.trust){ const b = g.trust; g.trust = clamp(g.trust + fx.trust, 0, 100); d.trust = g.trust - b; }
+  if (fx.coins){ addCoins(fx.coins, "life"); d.coins = fx.coins; }
+  save(); hudStatus(d); emit("status", { energy: g.energy, trust: g.trust, delta: d, src }); return d; }
+/* walking costs a little energy, resting at home restores it (slow, never blocks anything) */
+on("walked", e => { const g = gdd(); g.energy = clamp(g.energy - e.meters / 900, 8, 100); });
+on("home", () => { const g = gdd(); if (g.energy < 70){ g.energy = Math.min(70, g.energy + 10); hudStatus({ energy: 10 }); } });
+
+/* dialogues */
+function dialogueChoose(id, i){ const D = DIALOGUES[id], o = D && D.opts[i]; if (!o) return null; const g = gdd(), day = todayKey();
+  const fx = Object.assign({}, o.fx); if (g.dlg[id] === day) delete fx.coins;   /* coin rewards once a day per dialogue */
+  g.dlg[id] = day; const d = applyFx(fx, "dialogue:" + id); ME.look = 0;
+  if ((fx.energy || 0) + (fx.trust || 0) >= 0){ ME.happy = 2; jump(); } else { ME.happy = 0; }
+  emit("dialogue", { id, choice: i, fx: d }); return { o, d }; }
+
+/* ───────── App / Service Registry store ───────── */
+const SVC_KEY = "uru-game-services";
+const svcStore = () => { const v = store.get(SVC_KEY, null) || {}; return { over: v.over || {}, added: v.added || [] }; };
+function services(){ const st = svcStore(); return SERVICES_DEFAULT.map(s => Object.assign({}, s, st.over[s.id] || {}, { builtin: true })).concat(st.added.map(s => Object.assign({ icon: "pin", col: "#334155" }, s, { builtin: false }))); }
+function svc(id){ return services().find(s => s.id === id) || { id, name: "שירות", cat: "local", icon: "pin", col: "#334155", missing: true }; }
+function svcSave(st){ store.set(SVC_KEY, st); syncApps(); try{ buildMarkers(); }catch(e){} emit("services", { count: services().length }); }
+function svcSet(id, patch){ const st = svcStore(); if (SERVICES_DEFAULT.some(s => s.id === id)) st.over[id] = Object.assign({}, st.over[id] || {}, patch);
+  else { const a = st.added.find(s => s.id === id); if (!a) return false; Object.assign(a, patch); } svcSave(st); return true; }
+function svcResetOne(id){ const st = svcStore(); delete st.over[id]; svcSave(st); }
+function svcAdd(o){ const st = svcStore(), id = "my." + Date.now().toString(36); st.added.push({ id, name: o.name, cat: o.cat || "local", logo: o.logo || "", icon: "pin", col: o.col || "#334155" }); svcSave(st); return id; }
+function svcRemove(id){ const st = svcStore(); st.added = st.added.filter(s => s.id !== id); svcSave(st); }
+/* phone-app neighbourhood (shopping / streaming / games) is derived from the registry unless the host sends real installed apps */
+let HOST_APPS = false;
+function registryApps(){ return services().filter(s => s.cat === "shopping" || s.cat === "streaming" || s.cat === "games").map(s => ({ id: s.id, name: s.name, category: s.cat, col: s.col, icon: s.logo || "", svc: s.id })); }
+function syncApps(){ if (!HOST_APPS) APPS = registryApps(); }
+
+/* event → step flags (the quest model reads these; nothing else depends on them) */
+on("sheet", d => { if (d.open && !/^(debug|m-)/.test(d.id)) gddFlag("sheet:" + d.id); });
+on("arrive", d => gddFlag("arrive:" + d.place));
+on("tour", d => { if (d.on) gddFlag("tour"); });
+on("auth", d => gddFlag(d.stage === "sent" ? "authsent" : "auth:" + d.stage));
+on("auth", d => { if (d.stage === "ok" || d.stage === "proved") applyFx({ trust: 4 }, "auth"); });
+on("person", d => { gddFlag("person"); gddFlag("person:" + d.id); });
+["arcade", "gift", "share", "challenge", "visit"].forEach(k => on(k, () => gddFlag(k)));
+on("quest", () => gddChanged());
 
 /* ═════════ UI: HUD, sheets, popovers (DOM over the map) ═════════ */
 const $ = s => ROOT.querySelector(s), $$ = s => [...ROOT.querySelectorAll(s)];
@@ -2059,7 +2396,7 @@ function skeleton(){ ROOT.innerHTML = `
   <button class="hb exit" data-ui="exit" aria-label="חזרה לאפליקציה">${ic("back", 24)}</button>
   <button class="lvchip" data-ui="xp" aria-label="רמה ונקודות"><span class="ring"><b class="lvn">1</b></span><span class="lvt"><b class="lvl">רמה 1</b><u><i class="xpf"></i></u></span></button>
   <span class="sp"></span>
-  <button class="hb snd" data-ui="sound" role="switch" aria-checked="true" aria-label="צלילים">${ic("sound", 24)}</button>
+  <button class="hb stat" data-ui="status" aria-label="מצב הדמות"><span class="sf"></span><i class="eb" aria-hidden="true"><i></i></i></button>
   <button class="coins" data-ui="coins" aria-label="מטבעות">${coinSVG(26)}<b class="cn">0</b></button>
 </div>
 <div class="uw-demo" role="note">${ic("eye", 16)}<span>עולם דמו · אנשים ומקומות מדומים</span></div>
@@ -2071,7 +2408,8 @@ function skeleton(){ ROOT.innerHTML = `
 <button class="hb uw-daily" data-ui="daily" aria-label="מתנה יומית ומשימות יומיות">${ic("gift", 24)}<b class="dstreak" aria-hidden="true"></b><i class="ddot" aria-hidden="true"></i></button>
 <div class="uw-chal" hidden role="status" aria-live="polite"></div>
 <div class="uw-bottom">
-  <button class="qcard" data-ui="quests" aria-label="המשימה הנוכחית ויומן המשימות"><span class="qi">${ic("quest", 24)}</span><span class="qt"><small class="qs"></small><b class="qn"></b><small class="qd"></small><u><i class="qf"></i></u></span><span class="qgo">${ic("back", 20)}</span></button>
+  <div class="uw-banner" role="status" aria-live="polite" hidden></div>
+  <div class="qcard" role="group" aria-label="המשימה הנוכחית"><button class="qmain" data-ui="quests" aria-label="פרטי המשימה: מטרה, שלבים ותגמול"><span class="qi">${ic("quest", 24)}</span><span class="qt"><small class="qs"></small><b class="qn"></b><small class="qd"></small><u><i class="qf"></i></u></span></button><button class="qgo" data-ui="qnext"><span class="qgi">${ic("route", 20)}</span><span class="qgl">קח אותי</span></button></div>
   <nav class="uw-nav" aria-label="ניווט">
     <button data-ui="arenas">${ic("people", 24)}<span>זירות</span></button>
     <button data-ui="scan">${ic("scan", 24)}<span>סריקה</span></button>
@@ -2086,11 +2424,12 @@ function skeleton(){ ROOT.innerHTML = `
   </nav>
 </div>
 <div class="uw-layers"></div>
-<div class="uw-fx" aria-hidden="true"></div>`;
+<div class="uw-fx" aria-hidden="true"></div>${OPT.debug ? `<button class="hb uw-dbgb" data-ui="debug" aria-label="Debug / QA">${ic("bug", 22)}</button>` : ""}`;
   ROOT.addEventListener("click", e => { const b = e.target.closest("[data-ui]"); if (!b || !ROOT.contains(b)) return; const k = b.dataset.ui;
-    ({ exit: () => doExit(), xp: () => coinPop(true), coins: () => coinPop(false), quests: () => openQuests(), arenas: () => openArenas(), scan: () => openScan(), compass: () => openCompass(),
+    ({ exit: () => doExit(), xp: () => coinPop(true), coins: () => coinPop(false), quests: () => openQuest(), arenas: () => openArenas(), scan: () => openScan(), compass: () => openCompass(),
        home: () => goAct(PLACES.home.at, openHome), settings: () => openSettings(), locate: () => { FOLLOW = true; MAP.flyTo(toLL(ME.p.x, ME.p.y), Math.max(MAP.getZoom(), 17), { duration: RM ? 0 : .6 }); },
-       leave: () => leaveVisit(), fprog: () => openFriendWorld(), fgift: () => openGift(), sound: () => setSound(!AUDIO.on), daily: () => openDaily() }[k] || (() => {}))(); });
+       leave: () => leaveVisit(), fprog: () => openFriendWorld(), fgift: () => openGift(), sound: () => { setSound(!AUDIO.on); if (POP && POP.el.classList.contains("stpop")) openStatus(); }, daily: () => openDaily(),
+       status: () => openStatus(), qnext: () => { const t = activeTask(); if (t) questNext(t.id); else openQuests(); }, debug: () => openDebug() }[k] || (() => {}))(); });
   /* tactile feedback: soft marimba tap + tiny haptic on every button (first gesture also unlocks audio) */
   ROOT.addEventListener("pointerdown", e => { audioUnlock(); const b = e.target.closest("button, .uw-mk, label.btn"); if (b && !b.disabled && b.dataset.ui !== "sound"){ play("tap"); haptic(8); } }, { passive: true });
   soundBtnSync();
@@ -2103,12 +2442,20 @@ function hudUpdate(delta){ if (!ROOT) return; const lv = levelOf(S.xp), a = LEVE
   const el = $(".cn"); cancelAnimationFrame(COUNT_RAF); const from = SHOWN_COINS, to = COINS, t0 = now();
   const step = () => { const k = RM ? 1 : clamp((now() - t0) / 700, 0, 1); SHOWN_COINS = Math.round(lerp(from, to, ease(k))); el.textContent = fmt(SHOWN_COINS); if (k < 1) COUNT_RAF = requestAnimationFrame(step); }; step();
   if (delta > 0 && !RM){ const c = $(".coins"); c.classList.remove("pop"); void c.offsetWidth; c.classList.add("pop"); } }
-function questCard(){ if (!ROOT) return; const t = activeTask(), s = activeStage();
-  if (!t){ $(".qs").textContent = "כל חמשת השלבים הושלמו"; $(".qn").textContent = "העולם שלך חי ונושם"; $(".qd").textContent = "אפשר להמשיך באתגרים ובביקורים"; $(".qf").style.width = "100%"; return; }
-  const n = s.tasks.filter(x => S.done[x.id]).length; $(".qs").textContent = `שלב ${s.id} מתוך 5 · ${s.he}`;
-  $(".qn").textContent = t.he + (t.need ? ` · ${Math.min(S.prog[t.id] || 0, t.need)}/${t.need}` : ""); $(".qd").textContent = t.desc;
-  $(".qf").style.width = (n / s.tasks.length * 100) + "%"; }
-let TOAST_T = 0; function toast(html, kind){ const t = $(".uw-toast"); t.innerHTML = "<span>" + html + "</span>"; let top = 0; for (const s of [".uw-demo", ".uw-visit:not([hidden])", ".uw-incoming:not([hidden])", ".uw-chal:not([hidden])"]){ const e = $(s); if (e && e.offsetParent) top = Math.max(top, e.offsetTop + e.offsetHeight); } t.style.top = (top + 10) + "px"; t.className = "uw-toast on " + (kind || ""); clearTimeout(TOAST_T); TOAST_T = setTimeout(() => t.classList.remove("on"), 2800); }
+function questCard(){ if (!ROOT) return; const t = activeTask(), s = activeStage(), gl = $(".qgl"), qg = $(".qgo");
+  if (!t){ $(".qs").textContent = "כל חמשת השלבים הושלמו"; $(".qn").textContent = "העולם שלך חי ונושם"; $(".qd").textContent = "אפשר להמשיך באתגרים ובביקורים"; $(".qf").style.width = "100%"; gl.textContent = "היומן"; qg.setAttribute("aria-label", "יומן המשימות"); return; }
+  const m = questModel(t.id), n = s.tasks.filter(x => S.done[x.id]).length; $(".qs").textContent = `שלב ${s.id} מתוך 5 · ${s.he}`;
+  $(".qn").textContent = t.he + (t.need ? ` · ${Math.min(S.prog[t.id] || 0, t.need)}/${t.need}` : "");
+  $(".qd").textContent = m.paused ? "המשימה מושהית · לחצו להמשך" : m.hint ? `צעד ${m.active + 1}/${m.steps.length} · ${m.hint.text}` : t.desc;
+  $(".qcard").classList.toggle("paused", m.paused); gl.textContent = m.paused ? "המשך" : m.hint ? m.hint.label : "קח אותי"; qg.setAttribute("aria-label", "הצעד הבא: " + gl.textContent);
+  navDisclose(); hudStatus(); $(".qf").style.width = ((n + m.doneCount / Math.max(1, m.steps.length)) / s.tasks.length * 100) + "%"; }
+/* non-blocking toasts with a queue: one at a time, never stacked, duplicates dropped (GDD 3.1) */
+let TOAST_T = 0, TOAST_ON = null; const TQ = [];
+function toast(html, kind){ if (!ROOT) return; if ((TOAST_ON && TOAST_ON[0] === html) || TQ.some(x => x[0] === html)) return; TQ.push([html, kind]); if (TQ.length > 4) TQ.splice(0, TQ.length - 4); if (!TOAST_ON) toastNext(); }
+function toastNext(){ const t = ROOT && $(".uw-toast"); const n = TQ.shift(); if (!t || !n){ TOAST_ON = null; return; } TOAST_ON = n; t.innerHTML = "<span>" + n[0] + "</span>"; let top = 0;
+  for (const s of [".uw-demo", ".uw-visit:not([hidden])", ".uw-incoming:not([hidden])", ".uw-chal:not([hidden])"]){ const e = $(s); if (e && e.offsetParent) top = Math.max(top, e.offsetTop + e.offsetHeight); }
+  t.style.top = (top + 10) + "px"; t.className = "uw-toast on " + (n[1] || ""); emit("toast", { text: t.textContent, queued: TQ.length }); clearTimeout(TOAST_T);
+  TOAST_T = setTimeout(() => { t.classList.remove("on"); setTimeout(toastNext, 240); }, n[1] === "err" ? 3200 : TQ.length ? 1900 : 2600); }
 
 /* ───────── layers: bottom sheets / popover / full-screen, with Back support ───────── */
 const SHEETS = []; let POP = null, HIST = false, IGNORE_POP = false; const PENDING = [];
@@ -2120,19 +2467,19 @@ function histPush(){ if (!OPT.standalone || HIST) return; try{ history.pushState
 /* the pushed entry is kept when layers close from the UI: the next system Back at the map is then absorbed instead of leaving the page */
 function histPop(){}
 function openSheet(id, title, body, o){ o = o || {}; closePop(); const ex = SHEETS.findIndex(s => s.id === id); if (ex >= 0) closeSheet(SHEETS[ex], true);
-  const lay = $(".uw-layers"), wrap = document.createElement("div"); wrap.className = "uw-sheetwrap" + (o.full ? " full" : "");
+  const lay = $(".uw-layers"), wrap = document.createElement("div"); wrap.className = "uw-sheetwrap" + (o.full ? " full" : "") + (/\bcenter\b/.test(o.cls || "") ? " cw" : "");
   const tid = "sh-" + id + "-t";
   wrap.innerHTML = `<div class="uw-scrim" data-close></div><section class="uw-sheet${o.cls ? " " + o.cls : ""}" role="dialog" aria-modal="true" aria-labelledby="${tid}" data-sheet="${id}" tabindex="-1">
-    ${o.full || o.cls === "center" ? "" : `<div class="sh-grab" data-grab><i class="sh-handle"></i></div>`}
+    ${o.full || /\bcenter\b/.test(o.cls || "") ? "" : `<div class="sh-grab" data-grab><i class="sh-handle"></i></div>`}
     <header class="sh-head">${o.icon || ""}<h2 id="${tid}">${title}</h2><button class="hb close" data-close aria-label="סגירה">${ic(o.full ? "back" : "close", 22)}</button></header>
     <div class="sh-body">${body}</div>${o.foot ? `<footer class="sh-foot">${o.foot}</footer>` : ""}</section>`;
   lay.appendChild(wrap); const sh = { id, el: wrap, o, prevFocus: document.activeElement };
-  SHEETS.push(sh); wrap.addEventListener("click", e => { if (e.target.closest("[data-close]")){ closeSheet(sh); return; } const a = e.target.closest("[data-act]"); if (a && o.acts && o.acts[a.dataset.act]){ o.acts[a.dataset.act](a, e); } });
+  SHEETS.forEach(s => s.el.classList.add("under")); SHEETS.push(sh); wrap.addEventListener("click", e => { if (e.target.closest("[data-close]")){ closeSheet(sh); return; } const a = e.target.closest("[data-act]"); if (a && o.acts && o.acts[a.dataset.act]){ o.acts[a.dataset.act](a, e); } });
   bindGrab(sh); histPush(); requestAnimationFrame(() => { wrap.classList.add("on"); const f = wrap.querySelector(".sh-body [data-act], .sh-foot [data-act]") || wrap.querySelector(".uw-sheet"); try{ (o.focus ? wrap.querySelector(o.focus) : wrap.querySelector(".uw-sheet")).focus({ preventScroll: true }); }catch(e){} });
   if (!o.quiet) play("swoosh"); emit("sheet", { id, open: true }); if (o.onOpen) o.onOpen(wrap); return wrap; }
-function closeSheet(sh, instant){ const i = SHEETS.indexOf(sh); if (i < 0) return; SHEETS.splice(i, 1); const w = sh.el; w.classList.remove("on");
+function closeSheet(sh, instant){ const i = SHEETS.indexOf(sh); if (i < 0) return; SHEETS.splice(i, 1); const w = sh.el; w.classList.remove("on"); if (SHEETS.length) SHEETS[SHEETS.length - 1].el.classList.remove("under");
   setTimeout(() => w.remove(), instant || RM ? 0 : 230); if (sh.o.onClose) try{ sh.o.onClose(); }catch(e){}
-  try{ sh.prevFocus && sh.prevFocus.focus && sh.prevFocus.focus({ preventScroll: true }); }catch(e){} emit("sheet", { id: sh.id, open: false }); histPop(); flushPending(); }
+  try{ sh.prevFocus && sh.prevFocus.focus && sh.prevFocus.focus({ preventScroll: true }); }catch(e){} emit("sheet", { id: sh.id, open: false }); histPop(); flushPending(); if (!SHEETS.length) modalFlush(); }
 function closeTop(){ if (SHEETS.length) closeSheet(SHEETS[SHEETS.length - 1]); }
 function closeAll(){ closePop(); while (SHEETS.length) closeSheet(SHEETS[SHEETS.length - 1], true); }
 function setBody(id, html, foot){ const s = SHEETS.find(x => x.id === id); if (!s) return; s.el.querySelector(".sh-body").innerHTML = html;
@@ -2146,7 +2493,7 @@ function openPop(html, anchor, cls){ closePop(); const p = document.createElemen
   POP = { el: p, prevFocus: document.activeElement }; histPush(); if (anchor) anchor(p); requestAnimationFrame(() => { p.classList.add("on"); const f = p.querySelector("button"); f && f.focus({ preventScroll: true }); }); return p; }
 function closePop(){ if (!POP) return; const p = POP.el; POP = null; p.classList.remove("on"); setTimeout(() => p.remove(), RM ? 0 : 160); histPop(); }
 /* Back: closes the top layer; returns false when nothing is open so the host decides */
-function back(){ if (POP){ closePop(); return true; } if (FS){ closeFS(); return true; } if (TOUR){ endTour(true); return true; } if (SHEETS.length){ closeTop(); return true; } if (VISIT){ leaveVisit(); return true; } return false; }
+function back(){ if (ONB){ onbSkip(); return true; } if (POP){ closePop(); return true; } if (FS){ closeFS(); return true; } if (TOUR){ endTour(true); return true; } if (SHEETS.length){ closeTop(); return true; } if (VISIT){ leaveVisit(); return true; } return false; }
 function doExit(){ if (back()) return; save(); emit("exit", {}); if (OPT.onExit) OPT.onExit(); else toast("זה המסך הראשי של המשחק. באפליקציה, חזרה מחזירה לבית", ""); }
 
 /* ───────── character menu (instant popover over the avatar) ───────── */
@@ -2182,6 +2529,223 @@ function showLevelUp(lv, stage){ play("level"); haptic(20); if (HOME.c) sparkleB
   if (!RM) confetti(w.querySelector(".lu")); ME.wave = 2; emit("levelup", { level: lv, stage: stage && stage.id }); }
 function confetti(host){ const cols = ["#f6c343", "#22c55e", "#0ea5e9", "#f97316", "#a78bfa", "#14b8a6"]; for (let i = 0; i < 36; i++){ const s = document.createElement("i"); s.className = "cf";
   s.style.left = (10 + Math.random() * 80) + "%"; s.style.background = cols[i % cols.length]; s.style.animationDelay = (Math.random() * .5) + "s"; s.style.setProperty("--r", (Math.random() * 720 - 360) + "deg"); host.appendChild(s); setTimeout(() => s.remove(), 2600); } }
+
+/* ═════════ GDD v1 · [UI LAYER] ═════════
+   Quest detail sheet, onboarding coach, modal queue, non-blocking banner, keyboard-safe inputs + inline validation,
+   service registry screen, dialogues, HUD status chip, progressive nav, Debug/QA panel (?debug=1). */
+Object.assign(IC, { refresh: "M20 11a8 8 0 0 0-14.6-4.5M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5M20 20v-4h-4", pause: "M9 5v14M15 5v14", plus: "M12 5v14M5 12h14",
+  info: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 11v6M12 7.5h.01", bug: "M9 7a3 3 0 0 1 6 0M7 10h10v5a5 5 0 0 1-10 0zM12 10v10M4 13h3M17 13h3M5 8l2 2M19 8l-2 2M5 19l2-2M19 19l-2-2",
+  edit: "M4 20h4L19 9l-4-4L4 16zM14 6l4 4", alert: "M12 4l9 16H3zM12 10v4M12 17h.01", dot: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" });
+
+/* ───────── service icon: custom logo if set, else the built-in line icon (also the fallback when a logo fails) ───────── */
+function svcIcon(idOrSvc, sz){ const s = typeof idOrSvc === "string" ? svc(idOrSvc) : idOrSvc; sz = sz || 44;
+  return `<span class="svi" style="--c:${esc(s.col || "#334155")};width:${sz}px;height:${sz}px" data-svc="${esc(s.id)}"><i class="svf">${ic(s.icon || "pin", Math.round(sz * .55), "#fff", 2.2)}</i>${s.logo ? `<img alt="" src="${esc(s.logo)}" onerror="this.remove()">` : ""}</span>`; }
+
+/* ───────── modal queue: decisions only, one at a time, never stacked on another layer ───────── */
+const MQ = []; let MODAL = null, ONB = null;
+const modalBusy = () => !!(MODAL || SHEETS.length || POP || FS || TOUR || ONB);
+function modal(o){ if (modalBusy() && !o.force){ if (!MQ.some(x => x.id === o.id)) MQ.push(o); emit("modalqueued", { id: o.id, queue: MQ.length }); return null; } return modalOpen(o); }
+function modalOpen(o){ MODAL = o.id; return openSheet("m-" + o.id, o.title, o.body, { cls: "center gm", modal: true, icon: o.icon, foot: o.foot, acts: o.acts, onOpen: o.onOpen,
+  onClose: () => { MODAL = null; try{ o.onClose && o.onClose(); }catch(e){} modalFlush(); } }); }
+function modalFlush(){ later(() => { if (MQ.length && !modalBusy()) modalOpen(MQ.shift()); }, 380); }
+
+/* ───────── non-blocking banner (tips / status) above the quest card; one at a time ───────── */
+let BAN_T = 0;
+function banner(html, o){ o = o || {}; const b = ROOT && ROOT.querySelector(".uw-banner"); if (!b) return; clearTimeout(BAN_T);
+  b.innerHTML = `<span class="bn-ic">${ic(o.icon || "info", 20)}</span><span class="bn-t">${html}</span>${o.act ? `<button class="btn sm acc" data-bn="act">${esc(o.act.label)}</button>` : ""}<button class="hb bn-x" data-bn="x" aria-label="סגירת ההודעה">${ic("close", 20)}</button>`;
+  const hide = () => { b.hidden = true; ROOT && ROOT.classList.remove("has-banner"); };
+  b.hidden = false; ROOT.classList.add("has-banner"); b.onclick = e => { const k = e.target.closest("[data-bn]"); if (!k) return; hide(); if (k.dataset.bn === "act" && o.act) o.act.fn(); };
+  if (o.ttl !== 0) BAN_T = setTimeout(hide, o.ttl || 7000); emit("banner", { text: b.textContent }); }
+
+/* ───────── keyboard & small screens: keep the focused field, its label and the submit button visible ───────── */
+let KBSIM = null;   /* debug/QA: simulated visualViewport {height, offsetTop} */
+const isField = el => el && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) && el.type !== "file" && el.type !== "hidden";
+function vvNow(){ if (KBSIM) return KBSIM; const v = window.visualViewport; return v ? { height: v.height, offsetTop: v.offsetTop } : { height: innerHeight, offsetTop: 0 }; }
+function vvApply(){ if (!ROOT) return; const r = ROOT.getBoundingClientRect(), v = vvNow(); const below = Math.max(0, r.bottom - (v.offsetTop + v.height)), above = Math.max(0, v.offsetTop - r.top);
+  const kb = below > 40 ? below : 0; ROOT.style.setProperty("--kb", kb + "px"); ROOT.style.setProperty("--vvt", (kb ? above : 0) + "px"); ROOT.classList.toggle("kb", kb > 0);
+  const a = document.activeElement; if (a && ROOT.contains(a) && isField(a)) requestAnimationFrame(() => fieldIntoView(a)); }
+function fieldIntoView(el){ const body = el.closest(".sh-body"); if (!body) return; const grp = el.closest(".fld, label") || el, br = body.getBoundingClientRect(), gr = grp.getBoundingClientRect(), m = 12;
+  if (gr.height > br.height - 2 * m || gr.top < br.top + m) body.scrollTop -= (br.top + m - gr.top); else if (gr.bottom > br.bottom - m) body.scrollTop += gr.bottom - (br.bottom - m); emit("fieldvisible", { k: el.dataset.k || el.tagName }); }
+function kbInit(){ const v = window.visualViewport; if (v){ v.addEventListener("resize", vvApply); v.addEventListener("scroll", vvApply); } window.addEventListener("resize", vvApply);
+  ROOT.addEventListener("focusin", e => { if (isField(e.target)){ later(() => fieldIntoView(e.target), 60); later(vvApply, 340); } }); vvApply(); }
+function kbSim(px){ if (!px){ KBSIM = null; } else { KBSIM = { height: Math.max(200, innerHeight - px), offsetTop: 0 }; } vvApply(); return { kb: getComputedStyle(ROOT).getPropertyValue("--kb") }; }
+
+/* ───────── form fields with inline validation ───────── */
+function fld(o){ const id = "f-" + o.k + "-" + (o.uid || ""); const msg = `<p class="fmsg" id="${id}-m" aria-live="polite">${o.hint ? esc(o.hint) : ""}</p>`;
+  const input = o.type === "select" ? `<select id="${id}" data-k="${o.k}" aria-describedby="${id}-m">${o.opts.map(([v, t]) => `<option value="${esc(v)}"${v === o.val ? " selected" : ""}>${esc(t)}</option>`).join("")}</select>`
+    : o.type === "file" ? `<label class="btn ghost fbtn" role="button" tabindex="0">${ic("upload", 20)}${esc(o.btn || "בחירת קובץ")}<input id="${id}" type="file" accept="image/*" hidden data-k="${o.k}" aria-describedby="${id}-m"></label>`
+    : `<input id="${id}" type="${o.type || "text"}" ${o.mode ? `inputmode="${o.mode}"` : ""} dir="${o.dir || "auto"}" data-k="${o.k}" value="${esc(o.val || "")}" placeholder="${esc(o.ph || "")}"${o.max ? ` maxlength="${o.max}"` : ""} autocomplete="off" aria-describedby="${id}-m"${o.req ? ' aria-required="true"' : ""}>`;
+  return `<div class="fld" data-fld="${o.k}" data-hint="${esc(o.hint || "")}">${o.type === "file" ? `<span class="flbl">${esc(o.label)}</span>` : `<label for="${id}">${esc(o.label)}${o.req ? ' <em class="rq" aria-hidden="true">*</em>' : ""}</label>`}${input}${msg}</div>`; }
+function fldMark(root, k, err){ const f = root.querySelector(`[data-fld="${k}"]`); if (!f) return !err; const inp = f.querySelector("[data-k]");
+  f.classList.toggle("err", !!err); f.classList.toggle("ok", !err && !!(inp.value || f.dataset.okv)); inp.setAttribute("aria-invalid", err ? "true" : "false");
+  const m = f.querySelector(".fmsg"); m.innerHTML = err ? ic("alert", 16) + esc(err) : (f.dataset.okmsg ? ic("check", 16) + esc(f.dataset.okmsg) : esc(f.dataset.hint || "")); return !err; }
+function formFail(root, firstK){ play("soft"); haptic(30); const f = root.querySelector(`[data-fld="${firstK}"]`); if (f){ f.classList.remove("shake"); void f.offsetWidth; f.classList.add("shake"); const i = f.querySelector("[data-k]"); if (i && i.type !== "file") i.focus(); else fieldIntoView(f); } }
+const RULES = {
+  name: v => !v.trim() ? "שדה חובה: כתבו שם לשירות" : v.trim().length < 2 ? "השם קצר מדי (לפחות 2 תווים)" : v.trim().length > 24 ? "השם ארוך מדי (עד 24 תווים)" : "",
+  url: v => !v.trim() ? "" : /^(https:\/\/[^\s]+|data:image\/(png|jpeg|webp|gif|svg\+xml);base64,[A-Za-z0-9+/=]+)$/i.test(v.trim()) ? "" : "כתובת לא תקינה: צריכה להתחיל ב־https://",
+  email: v => !v.trim() ? "שדה חובה: כתובת אימייל" : /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? "" : "פורמט לא תקין, לדוגמה: name@example.com",
+  phone: v => !v.trim() ? "שדה חובה: מספר טלפון" : /^0\d{8,9}$/.test(v.replace(/[\s-]/g, "")) ? "" : "מספר לא תקין: 9–10 ספרות, מתחיל ב־0",
+  text: v => !v.trim() ? "שדה חובה: כתבו משימה קצרה או בחרו דוגמה" : v.trim().length < 2 ? "קצר מדי (לפחות 2 תווים)" : ""
+};
+/* image upload → small square data URL (kept on the device only) */
+function imgToLogo(file){ return new Promise((res, rej) => { if (!file || !/^image\//.test(file.type)) return rej("הקובץ אינו תמונה (PNG, JPG, WEBP)"); if (file.size > 4 * 1024 * 1024) return rej("הקובץ גדול מדי (עד 4MB)");
+  const fr = new FileReader(); fr.onerror = () => rej("לא הצלחנו לקרוא את הקובץ"); fr.onload = () => { const im = new Image(); im.onerror = () => rej("התמונה לא נטענה");
+    im.onload = () => { const c = document.createElement("canvas"); c.width = c.height = 96; const x = c.getContext("2d"), s = Math.min(im.width, im.height); x.drawImage(im, (im.width - s) / 2, (im.height - s) / 2, s, s, 0, 0, 96, 96); res(c.toDataURL("image/png")); }; im.src = fr.result; }; fr.readAsDataURL(file); }); }
+const imgLoads = src => new Promise(r => { if (!src) return r(true); const im = new Image(); const t = setTimeout(() => r(false), 6000); im.onload = () => { clearTimeout(t); r(true); }; im.onerror = () => { clearTimeout(t); r(false); }; im.src = src; });
+
+/* ───────── HUD status chip: energy (face + bar) & trust ───────── */
+function faceSVG(mood, s){ const mouth = mood === "happy" ? "M8.5 14.5q3.5 3.2 7 0" : mood === "low" ? "M8.5 16q3.5-2.6 7 0" : "M9 15h6"; const fill = mood === "happy" ? "#f6c343" : mood === "low" ? "#cbd5e1" : "#fcd98a";
+  return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="${fill}" stroke="#1f2937" stroke-width="1.4"/><circle cx="9" cy="10" r="1.3" fill="#1f2937"/><circle cx="15" cy="10" r="1.3" fill="#1f2937"/><path d="${mouth}" fill="none" stroke="#1f2937" stroke-width="1.6" stroke-linecap="round"/></svg>`; }
+function hudStatus(d){ if (!ROOT) return; const b = ROOT.querySelector(".hb.stat"); if (!b) return; const g = gdd(), m = moodOf();
+  b.querySelector(".sf").innerHTML = faceSVG(m, 30); b.querySelector(".eb i").style.width = g.energy + "%";
+  b.setAttribute("aria-label", `מצב הדמות · אנרגיה ${Math.round(g.energy)} · אמון ${Math.round(g.trust)}`); b.dataset.mood = m;
+  if (d && (d.energy || d.trust)){ b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); const parts = []; if (d.energy) parts.push((d.energy > 0 ? "+" : "") + Math.round(d.energy) + " אנרגיה"); if (d.trust) parts.push((d.trust > 0 ? "+" : "") + Math.round(d.trust) + " אמון");
+    const f = document.createElement("span"); f.className = "stfl " + ((d.energy || 0) + (d.trust || 0) >= 0 ? "up" : "dn"); f.textContent = parts.join(" · "); b.appendChild(f); setTimeout(() => f.remove(), 1700); } }
+function openStatus(){ const g = gdd(), sp = energySpeed();
+  openPop(`<div class="stp"><div class="stp-h">${faceSVG(moodOf(), 44)}<span><b>${esc(profName())} · ${moodOf() === "happy" ? "במצב רוח טוב" : moodOf() === "low" ? "קצת עייף/ה" : "רגוע/ה"}</b><small>הדמות מגיבה לבחירות שלך</small></span></div>
+    <div class="stp-r"><span>אנרגיה</span><u><i style="width:${g.energy}%"></i></u><b>${Math.round(g.energy)}</b></div><small class="stp-n">משפיעה על מהירות ההליכה (×${sp.toFixed(2)}). מנוחה בבית ממלאת אותה.</small>
+    <div class="stp-r"><span>אמון בשכונה</span><u><i style="width:${g.trust}%"></i></u><b>${Math.round(g.trust)}</b></div><small class="stp-n">עולה כשמאמתים לפני שמחליטים.</small>
+    <div class="stp-b"><button class="btn acc" data-st="talk">${ic("chat", 20)}שיחה עם הדמות</button><button class="btn ghost" data-ui="sound" role="switch" aria-checked="${AUDIO.on}">${ic(AUDIO.on ? "sound" : "mute", 20)}${AUDIO.on ? "צלילים פועלים" : "צלילים כבויים"}</button></div></div>`,
+    el => { el.style.transform = `translate(12px,72px)`; }, "stpop");
+  POP.el.querySelector("[data-st=talk]").onclick = () => { closePop(); openDialogue("checkin"); }; emit("statuspop", {}); }
+
+/* ───────── progressive disclosure of the nav ───────── */
+const NAV_HE = { arenas: "זירות", compass: "מצפן", scan: "סריקה", home: "הבית", settings: "הגדרות" };
+function navDisclose(){ if (!ROOT) return; const g = gdd(), nav = ROOT.querySelector(".uw-nav"); if (!nav) return; let n = 0, fresh = [];
+  nav.querySelectorAll("button[data-ui]").forEach(b => { const req = NAV_UNLOCK[b.dataset.ui], open = req == null || !!S.done[req] || !!OPT.revealAll; b.hidden = !open; if (open) n++;
+    if (open && req && !g.unlocked[b.dataset.ui]){ g.unlocked[b.dataset.ui] = 1; fresh.push(b); } });
+  nav.style.setProperty("--n", n); const dly = ROOT.querySelector(".uw-daily"); if (dly) dly.hidden = !(S.done[DAILY_UNLOCK] || OPT.revealAll);
+  if (fresh.length){ save(); fresh.forEach(b => { b.classList.add("fresh"); setTimeout(() => b.classList.remove("fresh"), 4000); }); later(() => toast(ic("star", 20) + " נפתח בתפריט: <b>" + fresh.map(b => NAV_HE[b.dataset.ui]).join(", ") + "</b>", "ok"), 1200); } }
+
+/* ───────── quest detail: the uniform quest unit on screen ───────── */
+function openQuest(id){ id = id || (activeTask() || {}).id; if (!id){ openQuests(); return; } ensureFeasible(id); let confirmReset = false;
+  const body = () => { const m = questModel(id); if (!m) return "";
+    const stepRow = (s, i) => `<li class="qs-${s.state}"><span class="qsi">${s.state === "done" ? ic("check", 18) : s.state === "active" ? `<i class="qsd"></i>` : `<b>${i + 1}</b>`}</span><span class="qst"><b>${esc(s.he)}</b><small>${s.state === "done" ? "בוצע" : s.state === "active" ? "עכשיו" : "ממתין"}</small></span></li>`;
+    return `<div class="qd-top"><small>שלב ${m.stage} מתוך 5 · ${esc(m.stageTitle)}${m.paused ? " · <b class='paused'>מושהית</b>" : ""}</small>
+      <div class="qd-obj"><span class="qd-oi">${ic("quest", 22)}</span><span><small>המטרה</small><b>${esc(m.objective)}</b></span></div></div>
+      <h3 class="h3">שלבי המשימה · ${m.doneCount}/${m.steps.length}</h3><ol class="qsteps">${m.steps.map(stepRow).join("")}</ol>
+      ${m.hint ? `<p class="qd-hint">${ic("info", 18)}<span><b>הצעד הבא:</b> ${esc(m.hint.text)}</span></p>` : ""}
+      <div class="qd-rw"><div><small>תגמול</small><b>+${m.reward.xp} נקודות${m.reward.coins ? " · +" + m.reward.coins + " מטבעות" : ""}</b></div><div><small>השפעה</small><b>${esc(m.effect)}</b></div><div><small>פותח</small><b>${esc(m.unlocks)}</b></div></div>
+      ${m.svc ? `<div class="row qd-svc">${svcIcon(m.svc, 40)}<span><b>${esc(svc(m.svc).name)}</b><small>שירות בשכונה שקשור למשימה</small></span></div>` : ""}
+      ${confirmReset ? `<div class="qd-confirm" role="alertdialog" aria-label="אישור איפוס"><p><b>לאפס את המשימה?</b><br>ההתקדמות במשימה הזו תתחיל מהצעד הראשון. מטבעות ופריטים שקנית נשארים.</p><div class="duo"><button class="btn acc" data-act="resetYes">כן, לאפס</button><button class="btn ghost" data-act="resetNo">ביטול</button></div></div>` : `
+      <h3 class="h3">לא מסתדר?</h3><div class="qd-ctl">
+        <button class="btn ghost" data-act="${m.paused ? "resume" : "pause"}">${ic(m.paused ? "play" : "pause", 20)}${m.paused ? "המשך המשימה" : "השהיית המשימה"}</button>
+        <button class="btn ghost" data-act="reset">${ic("refresh", 20)}איפוס המשימה</button>
+        <button class="btn ghost" data-act="unstuck">${ic("home", 20)}נתקעתי · חזרה הביתה</button>
+        <button class="btn ghost" data-act="log">${ic("quest", 20)}יומן כל המשימות</button></div>`}`; };
+  const foot = () => { const m = questModel(id); return m && m.hint && m.canDo ? `<button class="btn acc wide" data-act="next">${ic("route", 20)}${esc(m.hint.label)}</button><button class="btn ghost" data-close>סגירה</button>` : `<button class="btn ghost wide" data-close>סגירה</button>`; };
+  const m0 = questModel(id);
+  openSheet("quest", esc(m0.title), body(), { icon: `<span class="shi">${ic("quest", 24)}</span>`, foot: foot(),
+    acts: { next: () => questNext(id), pause: () => { pauseQuest(id, true); }, resume: () => { pauseQuest(id, false); },
+      reset: () => { confirmReset = true; setBody("quest", body()); const y = SHEETS.find(s => s.id === "quest"); y && y.el.querySelector("[data-act=resetYes]").focus(); },
+      resetNo: () => { confirmReset = false; setBody("quest", body()); }, resetYes: () => { confirmReset = false; resetQuest(id); }, unstuck: () => unstuck(), log: () => { closeTop(); openQuests(); } } });
+  GDD_Q = { id, body, foot }; emit("questdetail", { id }); }
+let GDD_Q = null;
+function gddRefresh(){ const s = SHEETS.find(x => x.id === "quest"); if (s && GDD_Q){ setBody("quest", GDD_Q.body(), GDD_Q.foot()); } const d = SHEETS.find(x => x.id === "debug"); if (d) setBody("debug", dbgBody()); }
+
+/* ───────── onboarding coach: who, goal, first action (skippable, < 30 s) ───────── */
+function onbStart(){ const g = gdd(); if (g.onb || VISIT || ONB) return; closeAll(); ONB = { i: 0, t0: now() }; g.onbT = [Date.now()];
+  const el = document.createElement("div"); el.className = "uw-coach"; el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-label", "היכרות קצרה");
+  $(".uw-layers").appendChild(el); ONB.el = el; ROOT.classList.add("has-coach"); histPush(); onbShow(); emit("onboarding", { step: 0 }); }
+function onbRect(k){ const R = ROOT.getBoundingClientRect(); if (k === "me" && ME.q) return { x: ME.q.x - 40, y: ME.q.y - 100 * (VIEW.sc || 1) - 10, w: 80, h: 112 * (VIEW.sc || 1) + 10 };
+  const e = $(k === "quest" ? ".qcard" : ".qgo"); if (!e) return null; const r = e.getBoundingClientRect(); return { x: r.left - R.left - 6, y: r.top - R.top - 6, w: r.width + 12, h: r.height + 12 }; }
+function onbShow(){ if (!ONB) return; const c = ONBOARDING[ONB.i], last = ONB.i === ONBOARDING.length - 1, r = onbRect(c.spot), H = ROOT.clientHeight;
+  const above = r && r.y + r.h / 2 > H * .5;
+  ONB.el.innerHTML = `${r ? `<i class="cm-spot" style="left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px"></i>` : `<i class="cm-scrim"></i>`}
+    <div class="cm-card ${above ? "up" : "down"}" style="${above ? `bottom:${Math.max(12, H - r.y + 14)}px` : `top:${r ? r.y + r.h + 14 : 120}px`}">
+      <div class="cm-top"><small>היכרות · ${ONB.i + 1} מתוך ${ONBOARDING.length}</small><button class="hb cm-x" data-onb="skip" aria-label="סגירת ההיכרות">${ic("close", 20)}</button></div>
+      ${c.k === "who" ? `<div class="cm-who">${meAv(48)}<b>${esc(c.t(profName()))}</b></div>` : `<b class="cm-t">${esc(c.t())}</b>`}<p>${esc(c.p)}</p>
+      <div class="cm-dots" aria-hidden="true">${ONBOARDING.map((_, i) => `<i class="${i === ONB.i ? "on" : ""}"></i>`).join("")}</div>
+      <div class="tb"><button class="btn ghost" data-onb="skip">דילוג</button><button class="btn acc" data-onb="${last ? "go" : "next"}">${last ? ic("route", 20) + "התחלת הסיור" : "הבא"}</button></div></div>`;
+  ONB.el.onclick = e => { const b = e.target.closest("[data-onb]"); if (b){ const k = b.dataset.onb; k === "next" ? onbNext() : k === "go" ? onbGo() : onbSkip(); return; } if (e.target.closest(".cm-spot") && last) onbGo(); };
+  ONB.el.classList.add("on"); const f = ONB.el.querySelector("[data-onb=next],[data-onb=go]"); f && f.focus({ preventScroll: true }); if (c.k === "who"){ ME.wave = 2; } }
+function onbNext(){ if (!ONB) return; ONB.i++; gdd().onbT.push(Date.now()); save(); onbShow(); emit("onboarding", { step: ONB.i }); }
+function onbEnd(){ if (!ONB) return; ONB.el.remove(); ONB = null; ROOT.classList.remove("has-coach"); later(modalFlush, 50); }
+function onbGo(){ const g = gdd(); g.onbT.push(Date.now()); g.onbStep = 3; save(); onbEnd(); emit("onboarding", { step: "first-action" }); questNext("tour"); }
+function onbSkip(){ const g = gdd(); g.onb = 1; g.onbSkipped = 1; save(); onbEnd(); emit("onboarding", { step: "skipped" });
+  banner("אפשר תמיד ללחוץ על <b>כרטיס המשימה</b> כדי לראות מה עושים עכשיו", { icon: "info", ttl: 6000 }); }
+on("quest", e => { const g = gdd(); if (e.id === "tour" && !g.firstWin){ g.firstWin = Date.now(); g.onb = 1; save();
+  later(() => banner("<b>הפעולה הראשונה הצליחה!</b> כך זה עובד: משימה, צעד, תגמול. הבאה בתור: סריקת חברים", { icon: "check", ttl: 6500 }), 600);
+  later(() => { if (!SHEETS.length && !POP && !TOUR) say("רוצה לספר לי איך את/ה מרגיש/ה היום?", 7000, { label: "בוא/י נדבר", fn: () => openDialogue("checkin") }); }, 7000); } gddChanged(); });
+
+/* ───────── dialogues (decision modal with felt consequences) ───────── */
+function openDialogue(id){ const D = DIALOGUES[id]; if (!D) return; const who = D.who === "me" ? null : D.who === "courier" ? NPCS.courier : PEOPLE.find(p => p.id === D.who);
+  const name = who ? who.name : profName(); let picked = -1;
+  const body = () => `<div class="dlg"><div class="dlg-who">${who ? av(who, 56) : meAv(56)}${D.svc ? svcIcon(D.svc, 30) : ""}<p class="dlg-line">${esc(D.line)}</p></div>
+    <div class="dlg-opts" role="group" aria-label="מה עונים?">${D.opts.map((o, i) => `<button class="opt ${picked === i ? "on" : ""}" data-act="opt" data-i="${i}" ${picked >= 0 ? "disabled" : ""}>${esc(o.he)}</button>`).join("")}</div>
+    <p class="dlg-res" aria-live="polite">${picked >= 0 ? ic("spark", 18) + esc(D.opts[picked].res) : ""}</p></div>`;
+  modal({ id: "dlg-" + id, title: esc(name), body: body(), foot: `<button class="btn ghost wide" data-close>לא עכשיו</button>`,
+    acts: { opt: el => { if (picked >= 0) return; picked = +el.dataset.i; const r = dialogueChoose(id, picked); setBody("m-dlg-" + id, body(), `<button class="btn acc wide" data-close>ממשיכים</button>`);
+      say(r.o.say, 3200); play((r.d.trust || 0) < 0 ? "soft" : "ok"); haptic(12);
+      const s = SHEETS.find(x => x.id === "m-dlg-" + id); if (s) s.o.onClose = () => { MODAL = null; modalFlush();
+        if (r.o.act === "quest") later(() => questNext(), 300);
+        if (r.o.act === "authCourier") later(() => openAuth(NPCS.courier, "לפני שפותחים את הדלת", () => { applyFx({ trust: 3 }, "auth"); say("עומר אומת. אפשר לפתוח בראש שקט", 2600); }), 300); }; } } });
+  emit("dialogueopen", { id }); }
+
+/* ───────── service registry screen (add / replace logos, saved on this device) ───────── */
+function svcUsage(id){ const q = Object.entries(QUEST_MODEL).filter(([, m]) => m.svc === id).map(([k]) => allTasks().find(t => t.id === k).he);
+  const b = Object.entries(SVC_OF).filter(([, v]) => v === id).map(([k]) => (BUSINESSES.find(x => x.id === k) || ORDERS.find(x => x.id === k) || {}).he).filter(Boolean); return q.map(x => "משימה: " + x).concat(b); }
+function openServices(){ let mode = "list", edit = null, draft = null;
+  const listBody = () => { const all = services(); return `<p class="p">כאן מגדירים את השירותים והאפליקציות שמוכרים לך מהשכונה. המשימות עובדות לפי מזהה קבוע, כך שהחלפת שם או לוגו לא משנה אותן.</p>
+    ${Object.entries(SVC_CATS).map(([c, he]) => { const xs = all.filter(s => s.cat === c); return xs.length ? `<h3 class="h3">${esc(he)}</h3>${xs.map(s => `<div class="row svr">${svcIcon(s, 44)}<span><b>${esc(s.name)}</b><small>${s.logo ? "לוגו מותאם" : "אייקון ברירת מחדל"}${svcUsage(s.id).length ? " · " + esc(svcUsage(s.id)[0]) : ""}</small></span><button class="btn sm ghost" data-act="edit" data-id="${esc(s.id)}" aria-label="עריכת ${esc(s.name)}">${ic("edit", 18)}עריכה</button></div>`).join("")}` : ""; }).join("")}`; };
+  const editBody = () => { const s = edit ? svc(edit) : { id: "", name: "", cat: "local", icon: "pin", col: "#334155" }, d = draft;
+    return `<div class="sv-prev">${svcIcon(Object.assign({}, s, { name: d.name, logo: d.logo }), 64)}<span><b>${esc(d.name || "שירות חדש")}</b><small>${edit ? `מזהה קבוע: <bdi dir="ltr">${esc(s.id)}</bdi>` : "יקבל מזהה קבוע בשמירה"}</small></span></div>
+      ${fld({ k: "name", label: "שם השירות", req: true, val: d.name, max: 30, ph: "למשל: המכולת של יוסי", hint: "2–24 תווים" })}
+      ${!edit || !s.builtin ? fld({ k: "cat", label: "קטגוריה", type: "select", val: d.cat, opts: Object.entries(SVC_CATS) }) : `<p class="mute sm">קטגוריה: ${esc(SVC_CATS[s.cat])}</p>`}
+      ${fld({ k: "logo", label: "כתובת לוגו (לא חובה)", type: "url", mode: "url", dir: "ltr", val: d.logo && !/^data:/.test(d.logo) ? d.logo : "", ph: "https://…", hint: "אם הלוגו לא נטען, יוצג אייקון ברירת מחדל" })}
+      ${fld({ k: "file", label: "או העלאת תמונה מהטלפון", type: "file", btn: "בחירת תמונה", hint: d.logo && /^data:/.test(d.logo) ? "נבחרה תמונה מהטלפון" : "PNG / JPG / WEBP, עד 4MB. נשמרת רק במכשיר" })}
+      ${d.logo ? `<button class="btn ghost wide mt" data-act="clearLogo">${ic("trash", 18)}הסרת הלוגו וחזרה לאייקון</button>` : ""}`; };
+  const listFoot = `<button class="btn acc wide" data-act="add">${ic("plus", 20)}הוספת שירות</button>`;
+  const editFoot = () => { const s = edit && svc(edit); return `<button class="btn acc" data-act="save">${ic("check", 20)}שמירה</button><button class="btn ghost" data-act="cancel">ביטול</button>${s && s.builtin && svcStore().over[edit] ? `<button class="btn ghost" data-act="def">ברירת מחדל</button>` : ""}${s && !s.builtin ? `<button class="btn ghost" data-act="del">מחיקה</button>` : ""}`; };
+  const sheet = () => SHEETS.find(x => x.id === "services");
+  const show = () => { if (mode === "list") setBody("services", listBody(), listFoot); else { setBody("services", editBody(), editFoot()); bindForm(); } const s = sheet(); if (s) s.el.querySelector(".sh-body").scrollTop = 0; };
+  const readDraft = () => { const el = sheet().el; const v = k => { const i = el.querySelector(`[data-k="${k}"]`); return i ? i.value : null; }; draft.name = v("name") || ""; if (v("cat") != null) draft.cat = v("cat"); const u = (v("logo") || "").trim(); if (u) draft.logo = u; else if (draft.logo && !/^data:/.test(draft.logo)) draft.logo = ""; };
+  const bindForm = () => { const el = sheet().el;
+    el.querySelector("[data-k=name]").addEventListener("input", e => { fldMark(el, "name", e.target.value.trim().length >= 2 ? RULES.name(e.target.value) : ""); el.querySelector(".sv-prev b").textContent = e.target.value || "שירות חדש"; });
+    el.querySelector("[data-k=name]").addEventListener("blur", e => fldMark(el, "name", RULES.name(e.target.value)));
+    el.querySelector("[data-k=logo]").addEventListener("blur", e => fldMark(el, "logo", RULES.url(e.target.value)));
+    el.querySelector("[data-k=file]").addEventListener("change", e => { const f = e.target.files[0]; imgToLogo(f).then(u => { readDraft(); draft.logo = u; show(); const el2 = sheet().el; const fx = el2.querySelector("[data-fld=file]"); fx.dataset.okv = "1"; fx.dataset.okmsg = "התמונה נטענה ומוצגת בתצוגה המקדימה"; fldMark(el2, "file", ""); }, err => fldMark(el, "file", err)); });
+    el.querySelector("label.fbtn").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); e.currentTarget.querySelector("input").click(); } }); };
+  openSheet("services", "השירותים והלוגואים בשכונה", listBody(), { icon: `<span class="shi">${ic("stall", 24)}</span>`, foot: listFoot,
+    acts: { edit: el => { edit = el.dataset.id; const s = svc(edit); draft = { name: s.name, cat: s.cat, logo: s.logo || "" }; mode = "edit"; show(); },
+      add: () => { edit = null; draft = { name: "", cat: "local", logo: "" }; mode = "edit"; show(); later(() => { const i = sheet() && sheet().el.querySelector("[data-k=name]"); i && i.focus(); }, 80); },
+      cancel: () => { mode = "list"; show(); }, clearLogo: () => { readDraft(); draft.logo = ""; const el = sheet().el.querySelector("[data-k=logo]"); if (el) el.value = ""; show(); },
+      def: () => { svcResetOne(edit); toast("השירות חזר לברירת המחדל", ""); mode = "list"; show(); },
+      del: () => { svcRemove(edit); toast("השירות נמחק", ""); mode = "list"; show(); },
+      save: async () => { const el = sheet().el; const name = el.querySelector("[data-k=name]").value, url = el.querySelector("[data-k=logo]").value;
+        const e1 = RULES.name(name), e2 = RULES.url(url); fldMark(el, "name", e1); fldMark(el, "logo", e2); if (e1 || e2){ formFail(el, e1 ? "name" : "logo"); emit("formerror", { form: "service", name: e1, logo: e2 }); return; }
+        readDraft(); if (draft.logo && !/^data:/.test(draft.logo)){ const okL = await imgLoads(draft.logo); if (!okL){ fldMark(sheet().el, "logo", "הלוגו לא נטען מהכתובת הזו. בדקו את הכתובת, או השאירו ריק לאייקון ברירת מחדל"); formFail(sheet().el, "logo"); return; } }
+        const patch = { name: draft.name.trim(), logo: draft.logo || "" }; if (edit){ if (!svc(edit).builtin) patch.cat = draft.cat; svcSet(edit, patch); } else svcAdd(Object.assign(patch, { cat: draft.cat }));
+        play("ok"); toast(ic("check", 20) + " נשמר · " + esc(patch.name) + (edit && svcUsage(edit).length ? " · המשימות ממשיכות לעבוד כרגיל" : ""), "ok"); mode = "list"; show(); } } });
+  emit("servicesopen", {}); }
+
+/* ───────── Debug / QA panel (?debug=1) ───────── */
+function dbgBody(){ const t = activeTask(), m = t && questModel(t.id), g = gdd(), L = { sheets: SHEETS.map(s => s.id), modal: MODAL, queue: MQ.map(x => x.id), pop: !!POP, tour: !!TOUR, onb: !!ONB };
+  return `<pre class="dbg-pre" dir="ltr">${esc(JSON.stringify({ quest: m ? { id: m.id, step: m.active + 1 + "/" + m.steps.length, steps: m.steps.map(s => s.state[0]).join(""), paused: m.paused, prog: m.prog + "/" + m.need } : "all done",
+    stage: activeStage() ? activeStage().id : 6, energy: Math.round(g.energy), trust: Math.round(g.trust), onb: g.onb, onbStep: g.onbStep, layers: L, kb: getComputedStyle(ROOT).getPropertyValue("--kb").trim(), vv: vvNow() }, null, 1))}</pre>
+    <p class="mute sm" dir="ltr">${GDD_LOG.slice(0, 6).map(esc).join("<br>")}</p>
+    <h3 class="h3">משימה</h3><div class="dbg-g"><button class="btn ghost" data-act="dStep">השלמת הצעד הבא</button><button class="btn ghost" data-act="dBack">צעד אחורה</button><button class="btn ghost" data-act="dDone">השלמת המשימה</button><button class="btn ghost" data-act="dReset">איפוס המשימה</button><button class="btn ghost" data-act="dUn">נתקעתי</button>${[2, 3, 4, 5].map(n => `<button class="btn ghost" data-act="dSkip" data-n="${n - 1}">לשלב ${n}</button>`).join("")}</div>
+    <h3 class="h3">חלונות והתראות</h3><div class="dbg-g"><button class="btn ghost" data-act="dModal">מודאל אישור</button><button class="btn ghost" data-act="dQueue">תור 2 מודאלים</button><button class="btn ghost" data-act="dToast">3 טוסטים</button><button class="btn ghost" data-act="dBanner">באנר</button></div>
+    <h3 class="h3">שדות הזנה</h3><div class="dbg-g"><button class="btn ghost" data-act="dForm">טופס בדיקה</button><button class="btn ghost" data-act="dKb">${KBSIM ? "סגירת מקלדת מדומה" : "מקלדת מדומה 320px"}</button></div>
+    <h3 class="h3">היכרות ודיאלוגים</h3><div class="dbg-g"><button class="btn ghost" data-act="dOnb">היכרות מחדש</button>${Object.keys(DIALOGUES).map(k => `<button class="btn ghost" data-act="dDlg" data-k="${k}">דיאלוג ${k}</button>`).join("")}</div>`; }
+const DBG = {
+  stepNext(){ const t = activeTask(); if (!t) return; const m = questModel(t.id), s = QUEST_MODEL[t.id] && QUEST_MODEL[t.id].steps[m.active]; if (!s) return; const c = s.c.any ? s.c.any[0] : s.c;
+    if (c.flag) gddFlag(c.flag); else if (c.prog != null) prog(t.id, c.prog); else if (c.authed){ S.authed[c.authed] = Date.now(); save(); } else if (c.wood != null){ S.inv.wood = Math.max(S.inv.wood, c.wood); save(); }
+    else if (c.paintInv){ S.inv.paint = 1; save(); } else if (c.seen){ S.seenArena[c.seen] = 1; prog(t.id, Object.keys(S.seenArena).length); } else if (c.tourstep != null){ gdd().tourMax = { t: Date.now(), n: c.tourstep }; save(); } else complete(t.id); gddChanged(); },
+  stepBack(){ const t = activeTask(); if (!t) return; const m = questModel(t.id), i = (m.active < 0 ? m.steps.length : m.active) - 1; if (i < 0) return; const s = QUEST_MODEL[t.id].steps[i], c = s.c.any ? s.c.any[0] : s.c;
+    if (c.flag) delete gdd().flags[c.flag]; else if (c.prog != null) S.prog[t.id] = Math.max(0, c.prog - 1); else if (c.tourstep != null) gdd().tourMax = { t: 0, n: 0 }; else gdd().qs[t.id] = Date.now(); save(); questCard(); gddChanged(); },
+  form(){ openSheet("qaform", "טופס בדיקה (QA)", `<p class="p">טופס לבדיקת שדות הזנה מול המקלדת. השדות נמצאים בתחתית כדי לבדוק גלילה אוטומטית.</p>${"<p class='mute'>שורת מילוי לבדיקת גלילה.</p>".repeat(6)}
+      ${fld({ k: "qname", label: "שם מלא", req: true, ph: "ישראל ישראלי", hint: "לפחות 2 תווים" })}${fld({ k: "qmail", label: "אימייל", type: "email", mode: "email", dir: "ltr", req: true, ph: "name@example.com" })}${fld({ k: "qphone", label: "טלפון", type: "tel", mode: "tel", dir: "ltr", req: true, ph: "050-0000000" })}`,
+    { icon: `<span class="shi">${ic("bug", 24)}</span>`, foot: `<button class="btn acc wide" data-act="send">שליחה</button><button class="btn ghost" data-close>ביטול</button>`,
+      acts: { send: () => { const el = SHEETS.find(x => x.id === "qaform").el, v = k => el.querySelector(`[data-k=${k}]`).value; const e = { qname: RULES.name(v("qname")).replace("לשירות", ""), qmail: RULES.email(v("qmail")), qphone: RULES.phone(v("qphone")) };
+        Object.entries(e).forEach(([k, x]) => fldMark(el, k, x)); const bad = Object.keys(e).find(k => e[k]); if (bad){ formFail(el, bad); return; } closeTop(); toast(ic("check", 20) + " הטופס תקין", "ok"); } } }); }
+};
+function openDebug(){ openSheet("debug", "Debug / QA", dbgBody(), { icon: `<span class="shi">${ic("bug", 24)}</span>`,
+  acts: { dStep: () => DBG.stepNext(), dBack: () => DBG.stepBack(), dDone: () => { const t = activeTask(); t && complete(t.id); gddChanged(); }, dReset: () => { const t = activeTask(); t && resetQuest(t.id); }, dUn: () => unstuck(),
+    dSkip: el => { API.debug.stagesSkip(+el.dataset.n); gddChanged(); }, dModal: () => { closeAll(); modal({ id: "qa", title: "לאשר את הפעולה?", body: `<p class="p">מודאל בדיקה: מופיע רק להחלטה מפורשת, עם כפתור סגירה וביטול.</p>`, foot: `<button class="btn acc" data-close>אישור</button><button class="btn ghost" data-close>ביטול</button>` }); },
+    dQueue: () => { closeAll(); modal({ id: "qa1", title: "מודאל 1", body: "<p class='p'>הראשון בתור</p>", foot: `<button class="btn acc wide" data-close>סגירה</button>` }); modal({ id: "qa2", title: "מודאל 2", body: "<p class='p'>נפתח רק אחרי שהראשון נסגר</p>", foot: `<button class="btn acc wide" data-close>סגירה</button>` }); },
+    dToast: () => { toast("טוסט 1 · עדכון סטטוס", ""); toast("טוסט 2 · טיפ", ""); toast(ic("check", 20) + " טוסט 3 · הצלחה", "ok"); }, dBanner: () => banner("באנר בדיקה: לא חוסם את המסך", { act: { label: "פעולה", fn: () => toast("נלחץ", "") } }),
+    dForm: () => DBG.form(), dKb: () => { kbSim(KBSIM ? 0 : 320); setBody("debug", dbgBody()); }, dOnb: () => { const g = gdd(); g.onb = 0; g.firstWin = 0; save(); closeAll(); onbStart(); }, dDlg: el => { closeAll(); openDialogue(el.dataset.k); } } }); }
 
 /* ═════════ SHEETS: quests, home, market, people, scan, authentication, arenas, compass, settings, visit ═════════ */
 const av = (p, s, extra) => `<span class="avb" style="--c:${p.circle ? CIRCLES[p.circle].col : "#57534e"};width:${s}px;height:${s}px"><img alt="" src="${portrait(LOOKS[p.look], extra)}"></span>`;
@@ -2311,8 +2875,8 @@ function updOrderEta(){ const s = SHEETS.find(x => x.id === "order"); if (!s) re
 function openArenas(start){ let cur = start || "people";
   const T = { people: "אנשים", biz: "עסקים וקניות", orders: "הזמנות ועבודה" };
   const cards = () => cur === "people" ? PEOPLE.slice(0, 6).map(p => `<button class="card" data-act="person" data-p="${p.id}">${av(p, 48)}<span><b>${esc(p.name)}</b><small>${CIRCLES[p.circle].he} · ${esc(p.status)}</small></span>${ic("back", 20)}</button>`).join("")
-    : cur === "biz" ? BUSINESSES.map(b => `<button class="card" data-act="biz" data-b="${b.id}"><span class="pin" style="--c:${CAT.biz}">${ic(b.icon, 24, "#fff")}</span><span><b>${esc(b.he)}</b><small>${esc(b.cat)} · ${esc(b.line)}</small></span>${ic("back", 20)}</button>`).join("")
-    : ORDERS.map(o => `<button class="card" data-act="order" data-o="${o.id}"><span class="pin" style="--c:${CAT.order}">${ic(o.icon, 24, "#fff")}</span><span><b>${esc(o.he)}</b><small>${esc(o.line)}</small></span>${ic("back", 20)}</button>`).join("");
+    : cur === "biz" ? BUSINESSES.map(b => `<button class="card" data-act="biz" data-b="${b.id}">${svcIcon(SVC_OF[b.id], 44)}<span><b>${esc(svc(SVC_OF[b.id]).name)}</b><small>${esc(b.cat)} · ${esc(b.line)}</small></span>${ic("back", 20)}</button>`).join("")
+    : ORDERS.map(o => `<button class="card" data-act="order" data-o="${o.id}">${svcIcon(SVC_OF[o.id], 44)}<span><b>${esc(o.he)}</b><small>${esc(o.line)}</small></span>${ic("back", 20)}</button>`).join("");
   const body = () => `<div class="seg" role="tablist" aria-label="זירות">${Object.entries(T).map(([k, s]) => `<button role="tab" aria-selected="${k === cur}" class="${k === cur ? "on" : ""}" data-act="tab" data-k="${k}">${s}</button>`).join("")}</div><div class="cards">${cards()}</div>`;
   const seen = () => { if (!S.seenArena[cur]){ S.seenArena[cur] = 1; save(); prog("arenas", Object.keys(S.seenArena).length); } };
   later(() => reward("enter:arenas", 3, 3, "ביקור בזירות"), 500);
@@ -2320,11 +2884,11 @@ function openArenas(start){ let cur = start || "people";
     acts: { tab: el => { cur = el.dataset.k; setBody("arenas", body()); seen(); }, person: el => openPerson(PEOPLE.find(p => p.id === el.dataset.p)), biz: el => openBiz(el.dataset.b), order: el => openOrder(el.dataset.o), share: () => openShare() } });
   emit("arenas", {}); }
 function openBiz(id){ const b = BUSINESSES.find(x => x.id === id); if (id === "market" && dist(ME.p, PLACES.market.at) < 60){ openMarket(); return; }
-  openSheet("biz", esc(b.he), `<div class="who"><span class="pin big" style="--c:${CAT.biz}">${ic(b.icon, 30, "#fff")}</span><span><b>${esc(b.he)}</b><small>${esc(b.cat)} · ${esc(b.line)}</small><small>${distTxt(ME.p, PLACES[b.place].at)} ${dirWord(ME.p, PLACES[b.place].at)} ממך</small></span></div><p class="p">${esc(b.detail)}</p>`,
+  openSheet("biz", esc(b.he), `<div class="who">${svcIcon(SVC_OF[b.id], 64)}<span><b>${esc(svc(SVC_OF[b.id]).name)}</b><small>${esc(b.cat)} · ${esc(b.line)}</small><small>${distTxt(ME.p, PLACES[b.place].at)} ${dirWord(ME.p, PLACES[b.place].at)} ממך</small></span></div><p class="p">${esc(b.detail)}</p>`,
     { foot: `${authBtn("auth")}<button class="btn ghost" data-act="walk">${ic("route", 20)}ללכת לשם</button>`,
       acts: { auth: () => openAuth({ id: b.id, name: b.authWho, short: b.authWho }, b.detail.split(".")[0], () => complete("authArena")), walk: () => { closeAll(); goAct(PLACES[b.place].at, () => id === "market" ? openMarket() : say("הגענו ל" + b.he, 1800)); } } }); }
 function openOrder(id){ const o = ORDERS.find(x => x.id === id), who = o.who === "roni" ? PEOPLE.find(p => p.id === "roni") : NPCS[o.who];
-  openSheet("order", esc(o.he), `<div class="who"><span class="pin big" style="--c:${CAT.order}">${ic(o.icon, 30, "#fff")}</span><span><b>${esc(o.he)}</b><small>${esc(o.line)}</small>${id === "order" ? `<small class="eta"></small>` : ""}</span></div><p class="p">${esc(o.detail)}</p>`,
+  openSheet("order", esc(o.he), `<div class="who">${svcIcon(SVC_OF[o.id], 64)}<span><b>${esc(o.he)}</b><small>${esc(o.line)}</small>${id === "order" ? `<small class="eta"></small>` : ""}</span></div><p class="p">${esc(o.detail)}</p>`,
     { foot: `${authBtn("auth")}<button class="btn ghost" data-act="share">${ic("share", 20)}עדכון המעגל</button>`, onOpen: updOrderEta,
       acts: { auth: () => openAuth(who, o.he, () => complete("authArena")), share: () => openShare(id === "meeting" ? "work" : "family") } }); }
 function openShare(circle){ let c = circle || "family", msg = 0; const M = ["אני בדרך הביתה", "ההזמנה הגיעה, תודה", "אני בפגישה, אחזור בקרוב", "בנינו גדר חדשה בבית"];
@@ -2348,11 +2912,12 @@ function openSettings(){ const sw = (k, label, sub, val) => `<button class="swr"
   const body = () => { const s = S.set.show; return `<h3 class="h3">על המפה</h3>${sw("people", "אנשים מהמעגל", "משפחה, חברים, עבודה ורשתות", s.people)}${sw("biz", "עסקים וקניות", "", s.biz)}${sw("orders", "הזמנות ועבודה", "", s.orders)}${sw("arcade", "נקודות ארקייד", "", s.arcade)}${sw("life", "חיים ותנועה בשכונה", "אנשים, רכבים, ציפורים ועננים", s.life)}
     <h3 class="h3">פרטיות ותחושה</h3>${sw("approx", "מיקום משוער", "מרחקים מעוגלים ל־50 מ'", S.set.approx)}${sw("sound", "צלילים", "צלילים רכים ורגועים", AUDIO.on)}${sw("haptic", "רטט עדין", "רטט קצר בלחיצה", AUDIO.haptic)}
     <h3 class="h3">הפרופיל שלי</h3><button class="row prow" data-act="photo">${meAv(48)}<span><b>תמונת הפרופיל שלי</b><small>${PROFILE.photo ? "מופיעה מעל הדמות במפה" : "להעלות תמונה או לבחור דמות"}</small></span>${ic("back", 20)}</button>
+    <h3 class="h3">השכונה שלי</h3><button class="row prow" data-act="svcs">${svcIcon("svc.cafe", 44)}<span><b>השירותים והלוגואים בשכונה</b><small>הוספה או החלפה של לוגו לשירותים ולאפליקציות</small></span>${ic("back", 20)}</button>
     <h3 class="h3">ערכת נושא</h3><div class="themes" role="radiogroup">${Object.entries(THEMES).map(([k, t]) => `<button role="radio" aria-checked="${S.set.theme === k}" class="th ${S.set.theme === k ? "on" : ""}" data-act="th" data-k="${k}"><i style="background:${t.map.land};border-color:${t.ui.acc}"><em style="background:${t.ui.acc}"></em></i><span>${t.he}</span></button>`).join("")}</div>
     <h3 class="h3">שעה במפה</h3><div class="seg" role="radiogroup">${[["real", "לפי השעה"], ["day", "יום"], ["night", "לילה"]].map(([k, s2]) => `<button role="radio" aria-checked="${S.set.time === k}" class="${S.set.time === k ? "on" : ""}" data-act="tm" data-k="${k}">${s2}</button>`).join("")}</div>
     <button class="btn ghost wide mt" data-act="reset">התחלת הדמו מחדש</button>`; };
   openSheet("settings", "מה מופיע אצלי", body(), { icon: `<span class="shi">${ic("sliders", 24)}</span>`,
-    acts: { photo: () => openPhoto(), t: el => { const k = el.dataset.k; if (k === "sound"){ setSound(!AUDIO.on); setBody("settings", body()); return; } if (k === "haptic"){ AUDIO.haptic = !AUDIO.haptic; S.set.haptic = AUDIO.haptic ? 1 : 0; save(); setBody("settings", body()); haptic(15); return; } if (k in S.set.show) S.set.show[k] = S.set.show[k] ? 0 : 1; else S.set[k] = S.set[k] ? 0 : 1; save(); setBody("settings", body()); buildMarkers(); emit("settings", S.set); },
+    acts: { photo: () => openPhoto(), svcs: () => openServices(), t: el => { const k = el.dataset.k; if (k === "sound"){ setSound(!AUDIO.on); setBody("settings", body()); return; } if (k === "haptic"){ AUDIO.haptic = !AUDIO.haptic; S.set.haptic = AUDIO.haptic ? 1 : 0; save(); setBody("settings", body()); haptic(15); return; } if (k in S.set.show) S.set.show[k] = S.set.show[k] ? 0 : 1; else S.set[k] = S.set[k] ? 0 : 1; save(); setBody("settings", body()); buildMarkers(); emit("settings", S.set); },
       th: el => { setTheme(el.dataset.k); setBody("settings", body()); }, tm: el => { S.set.time = el.dataset.k; save(); sunCheck(); setBody("settings", body()); },
       reset: () => { const t = S.set.theme; localStorage.removeItem(KEY); S = DEF(); S.set.theme = t; setCoins(0); closeAll(); seedWorld(); ME.p = { ...PLACES.home.at }; dailyRoll(); dailyBadge(); buildMarkers(); questCard(); hudUpdate(0); MAP.setView(toLL(ME.p.x, ME.p.y), 17.25); later(welcome, 400); } } }); }
 
@@ -2380,13 +2945,13 @@ function leaveVisit(){ if (!VISIT) return; const id = VISIT; VISIT = null; close
 let TOUR = null;
 function startTour(){ closeAll(); const pts = [["forest", "החורשה בגן מאיר", "כאן אוספים עצים ופוגשים חברים מהמעגל"], ["market", "שוק הכרמל", "עסקים וקניות. לפני מסחר, מאמתים מול מי עומדים"], ["arcade1", "ארקייד בכיכר דיזנגוף", "אתגרים קצרים בתנועה, נפתחים בהמשך"], ["home", "הבית שלך", "כאן בונים גדר, צובעים ומרהטים"]];
   TOUR = { i: -1, pts }; const el = document.createElement("div"); el.className = "uw-tour"; el.setAttribute("role", "dialog"); el.setAttribute("aria-label", "סיור היכרות"); $(".uw-layers").appendChild(el); TOUR.el = el; histPush(); nextTour(); emit("tour", { on: true }); }
-function nextTour(){ if (!TOUR) return; TOUR.i++; if (TOUR.i >= TOUR.pts.length){ endTour(false); return; } const [k, t, s] = TOUR.pts[TOUR.i], p = k === "home" ? HOME.c : PLACES[k].at;
+function nextTour(){ if (!TOUR) return; TOUR.i++; if (TOUR.i >= TOUR.pts.length){ endTour(false); return; } { const g = gdd(); if (g.tourMax.t < questStart("tour")) g.tourMax = { t: Date.now(), n: 0 }; g.tourMax.n = Math.max(g.tourMax.n, TOUR.i + 1); g.tourMax.t = Date.now(); gddChanged(); } const [k, t, s] = TOUR.pts[TOUR.i], p = k === "home" ? HOME.c : PLACES[k].at;
   MAP.flyTo(toLL(p.x, p.y + 25), 17.5, { duration: RM ? 0 : 1.1 });
   TOUR.el.innerHTML = `<div class="tc"><small>סיור היכרות · ${TOUR.i + 1} מתוך ${TOUR.pts.length}</small><b>${esc(t)}</b><p>${esc(s)}</p><div class="tb"><button class="btn ghost" data-tour="skip">דילוג</button><button class="btn acc" data-tour="next">${TOUR.i === TOUR.pts.length - 1 ? "סיום" : "הבא"}</button></div></div>`;
   TOUR.el.classList.add("on"); TOUR.el.onclick = e => { const b = e.target.closest("[data-tour]"); if (!b) return; b.dataset.tour === "next" ? nextTour() : endTour(true); }; const f = TOUR.el.querySelector("[data-tour=next]"); f && f.focus({ preventScroll: true }); }
 function endTour(skipped){ if (!TOUR) return; TOUR.el.remove(); TOUR = null; later(flushPending, 50); MAP.flyTo(toLL(ME.p.x, ME.p.y), 17.25, { duration: RM ? 0 : .9 }); if (!skipped) complete("tour"); emit("tour", { on: false }); }
 
-function welcome(){ greet(); later(() => { if (!S.welcomeTip){ S.welcomeTip = 1; save(); proactive(); } }, 9000); if (!S.welcome){ S.welcome = true; addCoins(30, "quests"); later(() => toast(coinSVG(20) + " מתנת פתיחה: 30 מטבעות", "ok"), 1600); save(); } }
+function welcome(){ greet(); const wasOnb = !!gdd().onb; if (!wasOnb && !VISIT) later(onbStart, 900); later(() => { if (!S.welcomeTip && wasOnb){ S.welcomeTip = 1; save(); proactive(); } }, 9000); if (!S.welcome){ S.welcome = true; addCoins(30, "quests"); later(() => toast(coinSVG(20) + " מתנת פתיחה: 30 מטבעות", "ok"), 1600); save(); } }
 
 /* ═════════ LIFE v2: profile photo · rewards · daily streak & tasks · home design shop ·
    my digital neighbourhood (shopping plaza, cinema, game hall) · companion missions ("תן לי משימה") ═════════ */
@@ -2488,15 +3053,11 @@ function openShop(){ if (VISIT) return; openSheet("shop", "עיצוב הבית",
   emit("shopopen", {}); }
 
 /* ───────── my digital neighbourhood: buildings for the apps on my phone ───────── */
-const DEMO_APPS = [
-  { id: "amazon", name: "Amazon", category: "shopping", col: "#b45309" }, { id: "aliexpress", name: "AliExpress", category: "shopping", col: "#c2410c" },
-  { id: "temu", name: "Temu", category: "shopping", col: "#ea580c" }, { id: "wolt", name: "Wolt", category: "shopping", col: "#0369a1" },
-  { id: "netflix", name: "Netflix", category: "streaming", col: "#b91c1c" }, { id: "youtube", name: "YouTube", category: "streaming", col: "#dc2626" }, { id: "disney", name: "Disney+", category: "streaming", col: "#1e40af" },
-  { id: "candy", name: "Candy Crush", category: "games", col: "#7c3aed" }, { id: "chess", name: "Chess.com", category: "games", col: "#15803d" }, { id: "clash", name: "Clash Royale", category: "games", col: "#1d4ed8" }, { id: "words", name: "מילה ביום", category: "games", col: "#0f766e" }
-];
-let APPS = DEMO_APPS.slice();
+/* demo phone apps now come from the App/Service Registry (fictional names, generic icons; GDD 4.1) */
+const DEMO_APPS = { filter: f => registryApps().filter(f) };
+let APPS = registryApps();
 const appsOf = c => APPS.filter(a => a.category === c);
-function appTile(a){ return `<button class="app" data-act="app" data-app="${esc(a.id)}" aria-label="פתיחת ${esc(a.name)}"><span class="app-ic" style="--c:${a.col || "#334155"}">${a.icon ? `<img alt="" src="${esc(a.icon)}">` : esc(a.name.charAt(0))}</span><b>${esc(a.name)}</b><small>${S.rw && S.rw.day === todayKey() && S.rw.k["app:" + a.id] ? "שוחק היום" : "+5 מטבעות"}</small></button>`; }
+function appTile(a){ return `<button class="app" data-act="app" data-app="${esc(a.id)}" aria-label="פתיחת ${esc(a.name)}">${a.svc ? svcIcon(a.svc, 52).replace('class="svi"', 'class="svi app-ic"') : `<span class="app-ic" style="--c:${a.col || "#334155"}">${a.icon ? `<img alt="" src="${esc(a.icon)}" onerror="this.remove()">` : esc(a.name.charAt(0))}</span>`}<b>${esc(a.name)}</b><small>${S.rw && S.rw.day === todayKey() && S.rw.k["app:" + a.id] ? "שוחק היום" : "+5 מטבעות"}</small></button>`; }
 function launchApp(id){ const a = APPS.find(x => x.id === id); if (!a) return; emit("launchapp", { id, category: a.category });
   const lbl = a.category === "shopping" ? "פעילות קניות" : a.category === "streaming" ? "ערב סרט" : "משחק בטלפון";
   if (!reward("app:" + id, 5, 5, lbl)) toast(`${esc(a.name)} נפתחת · הפרס של היום כבר התקבל`, "");
@@ -2542,11 +3103,11 @@ let MISSION = null;
 function openMission(prefill){ if (VISIT){ toast("אפשר לתת משימה כשחוזרים הביתה", ""); return; }
   const w = openSheet("mission", "תן לי משימה", `<div class="ms-head">${meAv(44)}<span><b>מה לעשות בשבילך?</b><small>הדמות תצא לדרך במפה ותחזור עם אפשרויות</small></span></div>
     <div class="chips">${MISSION_CHIPS.map(c => `<button class="chip" data-act="chip" data-t="${esc(c)}">${esc(c)}</button>`).join("")}</div>
-    <label class="ms-in"><span>או לכתוב כל משימה</span><textarea dir="rtl" rows="2" maxlength="140" placeholder="למשל: תמצא לי מקום לקפה מחר בבוקר" data-mtext>${esc(prefill || "")}</textarea></label>
+    <div class="fld" data-fld="mtext" data-hint="עד 140 תווים"><label class="ms-in"><span>או לכתוב כל משימה</span><textarea dir="rtl" rows="2" maxlength="140" placeholder="למשל: תמצא לי מקום לקפה מחר בבוקר" data-mtext data-k="mtext" aria-describedby="f-mtext-m">${esc(prefill || "")}</textarea></label><p class="fmsg" id="f-mtext-m" aria-live="polite">עד 140 תווים</p></div>
     <p class="mute sm">מצב דמו · הדגמת עוזר אישי. באפליקציה המשימה תעבור לעוזר האמיתי.</p>`,
     { icon: `<span class="shi">${ic("chat", 24)}</span>`, foot: `<button class="btn acc wide" data-act="go">${ic("route", 20)}צא/י לדרך</button>`, focus: "[data-mtext]",
-      acts: { chip: el => { const ta = SHEETS.find(x => x.id === "mission").el.querySelector("[data-mtext]"); ta.value = el.dataset.t; play("tap"); },
-        go: () => { const ta = SHEETS.find(x => x.id === "mission").el.querySelector("[data-mtext]"), t = (ta.value || "").trim(); if (!t){ ta.focus(); toast("כתוב/כתבי משימה קצרה או בחר/י דוגמה", ""); return; } startMission(t); } } });
+      acts: { chip: el => { const ta = SHEETS.find(x => x.id === "mission").el.querySelector("[data-mtext]"); ta.value = el.dataset.t; play("tap"); fldMark(SHEETS.find(x => x.id === "mission").el, "mtext", ""); },
+        go: () => { const ta = SHEETS.find(x => x.id === "mission").el.querySelector("[data-mtext]"), t = (ta.value || "").trim(); { const er = RULES.text(t), w2 = SHEETS.find(x => x.id === "mission").el; fldMark(w2, "mtext", er); if (er){ formFail(w2, "mtext"); return; } } startMission(t); } } });
   emit("missionopen", {}); return w; }
 function chal(html){ const el = ROOT && ROOT.querySelector(".uw-chal"); if (!el) return; if (html == null){ el.hidden = true; el.innerHTML = ""; return; } el.hidden = false; el.innerHTML = html; }
 function startMission(text){ if (CH){ toast("קודם מסיימים את המסלול", ""); return; } const cat = missionCat(text), M = MCAT[cat];
@@ -2574,7 +3135,7 @@ function missionResult(text, cat, opts, demo){ let sel = 0; const M = MCAT[cat];
 const PROACTIVE = [["בא לך שאחפש לך משהו בקניות?", "חפש לי", () => openMission("תחפש לי מתנה קטנה")], ["רוצה שאזמין לנו מקום במסעדה?", "כן, תזמין", () => openMission("תזמין לי מקום במסעדה")],
   ["אפשר להיכנס לסרט בקולנוע, או שנמשיך במשימה?", "לקולנוע", () => goAct(NB.cinema.at, openCinema)], ["יש לי זמן פנוי. תן/י לי משימה!", "תן לי משימה", () => openMission()]];
 let PRO_I = 0, PRO_OFF = false;
-function proactive(force){ if (!ALIVE || (PRO_OFF && !force) || SHEETS.length || POP || FS || TOUR || VISIT || MISSION || CH) return false; const [s2, lab, fn] = PROACTIVE[PRO_I++ % PROACTIVE.length]; say(s2, 6500, { label: lab, fn }); emit("proactive", { text: s2 }); return true; }
+function proactive(force){ if (!ALIVE || (PRO_OFF && !force) || SHEETS.length || POP || FS || TOUR || VISIT || MISSION || CH || ONB || MODAL || !gdd().onb) return false; const [s2, lab, fn] = PROACTIVE[PRO_I++ % PROACTIVE.length]; say(s2, 6500, { label: lab, fn }); emit("proactive", { text: s2 }); return true; }
 
 /* ═════════ ARCADE: challenge card, Symbol Hunter, route challenge, "who is near" ═════════ */
 let FS = null, CH = null;
@@ -2705,7 +3266,8 @@ function startNear(){ const ppl = PEOPLE.filter(p => p.circle === "friends" || p
 function setTheme(k){ if (!THEMES[k]) return; S.set.theme = k; TH = THEMES[k]; save(); if (!ROOT) return; ROOT.dataset.theme = k;
   const u = TH.ui; for (const n in u) ROOT.style.setProperty("--" + n, u[n]); ROOT.style.setProperty("--auth", AUTH_PINK); ROOT.style.setProperty("--onauth", AUTH_INK); ROOT.style.setProperty("--req", REQ_BLUE);
   ROOT.style.setProperty("--land", TH.map.land); if (VLAYER) VLAYER.redraw(); treeCache.clear(); emit("theme", { theme: k }); }
-function mount(host, opts){ if (ALIVE) unmount(); opts = opts || {}; OPT = Object.assign({ name: "דנה", standalone: false }, opts); if (opts.userName) OPT.name = opts.userName; loadState();
+function mount(host, opts){ if (ALIVE) unmount(); opts = opts || {}; OPT = Object.assign({ name: "דנה", standalone: false }, opts); if (opts.userName) OPT.name = opts.userName; loadState(); gdd(); syncApps();
+  if (/[?&]debug=1\b/.test(location.search || "")) OPT.debug = true; if (/[?&]all=1\b/.test(location.search || "")) OPT.revealAll = true;
   if (S.home.paint) S.home.paint = paintStyle(S.home.paint); if (S.set.haptic != null) AUDIO.haptic = !!S.set.haptic; S.set.sound = AUDIO.on ? 1 : 0;
   loadProfile(); if (opts.userName || opts.name) PROFILE.name = opts.userName || opts.name; if (opts.profilePhotoUrl) setPhotoImg(opts.profilePhotoUrl); saveProfile();
   if (Array.isArray(opts.installedApps) && opts.installedApps.length) setInstalledApps(opts.installedApps); loadSprites(); dailyRoll(); SUNP = "x"; PRO_OFF = opts.proactive === false || /[?&]quiet\b/.test(location.search || "");
@@ -2726,7 +3288,8 @@ function mount(host, opts){ if (ALIVE) unmount(); opts = opts || {}; OPT = Objec
   MAP.on("zoomanim", () => { CANVAS.style.opacity = "0"; }); MAP.on("zoomend", () => { CANVAS.style.opacity = "1"; });
   MAP.on("dragstart", () => { FOLLOW = false; closePop(); });
   startMover("courier", PLACES.market.at, PLACES.home.at, 7, true); startMover("yoni", PEOPLE[4].at, PLACES.office.at, 3.5, true); startMover("amit", PEOPLE[7].at, U(32.07560, 34.76950), 4.5, true);
-  buildMarkers(); questCard(); hudUpdate(0); SHOWN_COINS = COINS; hudUpdate(0); dailyBadge();
+  buildMarkers(); questCard(); hudUpdate(0); SHOWN_COINS = COINS; hudUpdate(0); dailyBadge(); hudStatus(); navDisclose(); kbInit();
+  window.addEventListener("pagehide", save); document.addEventListener("visibilitychange", () => { if (document.hidden && ALIVE) save(); });
   window.addEventListener("popstate", onPop); window.addEventListener("keydown", onKey); window.addEventListener("storage", onStorage);
   ALIVE = true; LAST = 0; RAF = requestAnimationFrame(frame); later(welcome, 700);
   if (S.prog.scan && !S.done.auth1) later(() => showIncoming(PEOPLE[0]), 6000);
@@ -2737,7 +3300,7 @@ function onStorage(e){ if (ALIVE && e.key === COIN_KEY) syncCoins(); }
 function onKey(e){ if (!ALIVE) return; if (e.key === "Escape"){ if (back()) e.preventDefault(); }
   if (e.key === "Tab"){ const top = POP ? POP.el : FS ? FS.el : SHEETS.length ? SHEETS[SHEETS.length - 1].el : null; if (!top) return; const f = [...top.querySelectorAll("button:not([disabled]),[tabindex]:not([tabindex='-1'])")].filter(x => x.offsetParent); if (!f.length) return;
     const i = f.indexOf(document.activeElement); if (e.shiftKey && i <= 0){ f[f.length - 1].focus(); e.preventDefault(); } else if (!e.shiftKey && i === f.length - 1){ f[0].focus(); e.preventDefault(); } } }
-function setInstalledApps(list){ const cols = ["#b45309", "#0369a1", "#15803d", "#7c3aed", "#b91c1c", "#1e40af", "#0f766e", "#c2410c"];
+function setInstalledApps(list){ HOST_APPS = true; const cols = ["#b45309", "#0369a1", "#15803d", "#7c3aed", "#b91c1c", "#1e40af", "#0f766e", "#c2410c"];
   APPS = list.filter(a => a && a.id && a.name).map((a, i) => ({ id: String(a.id), name: String(a.name), category: ["shopping", "streaming", "games"].includes(a.category) ? a.category : "games", icon: a.icon || a.iconUrl || "", col: a.color || cols[i % cols.length] }));
   ["shopping", "streaming", "games"].forEach(c => { if (!appsOf(c).length) APPS.push(...DEMO_APPS.filter(a => a.category === c)); }); }
 function unmount(){ ALIVE = false; cancelAnimationFrame(RAF); if (CH && CH.timer) clearInterval(CH.timer); MISSION = null; try{ save(); }catch(e){} window.removeEventListener("popstate", onPop); window.removeEventListener("keydown", onKey); window.removeEventListener("storage", onStorage);
@@ -2757,12 +3320,18 @@ const API = {
     proactive: on => { if (on === false){ PRO_OFF = true; return; } return proactive(true); }, sparks: () => AMB.sparks.length, addXP: x => gainXP(x), walkTo: (lat, lng, cb) => walkTo(fromLL({ lat, lng }), cb), teleport: k => { const p = k.x != null ? k : (k === "home" ? PLACES.home.at : PLACES[k].at); ME.p = { x: p.x, y: p.y + 2 }; ME.path = null; MAP.setView(toLL(ME.p.x, ME.p.y), MAP.getZoom(), { animate: false }); },
     finishWalk: () => { if (!ME.path) return; ME.sp = 1e6; }, me: () => ({ ...ME.p, walking: !!ME.path, screen: ME.q ? { x: ME.q.x, y: ME.q.y } : null }), markerPoint: id => { const m = MK[id]; if (!m) return null; const q = MAP.latLngToContainerPoint(m.m.getLatLng()); return { x: q.x, y: q.y }; },
     place: k => PLACES[k] ? { ...PLACES[k].at } : null, toScreen: (x, y) => { const q = MAP.latLngToContainerPoint(toLL(x, y)); return { x: q.x, y: q.y }; }, logs: () => S.logs, route: () => CH ? { k: CH.k, pts: CH.pts } : null,
-    sh: () => SH, state: () => S, reset: () => { localStorage.removeItem(KEY); localStorage.removeItem(COIN_KEY); }, layers: () => ({ sheets: SHEETS.map(s => s.id), pop: !!POP, fs: !!FS, tour: !!TOUR, visit: VISIT }),
+    sh: () => SH, state: () => S, reset: () => { NOSAVE = true; localStorage.removeItem(KEY); localStorage.removeItem(COIN_KEY); }, layers: () => ({ sheets: SHEETS.map(s => s.id), pop: !!POP, fs: !!FS, tour: !!TOUR, visit: VISIT }),
     stagesSkip: n => { for (const s of STAGES) if (s.id <= n) s.tasks.forEach(t => { S.done[t.id] = S.done[t.id] || Date.now(); }); S.xp = Math.max(S.xp, LEVELS[Math.min(n + 1, LEVELS.length - 1)]); S.lastLevel = levelOf(S.xp); save(); buildMarkers(); questCard(); hudUpdate(0); },
     say: s => say(s, 4000), map: () => MAP,
     missionCat: t => missionCat(t), charMenu: () => { closeAll(); openCharMenu(); return !!POP; }, centerMe: () => { MAP.stop(); MAP.setView(toLL(ME.p.x, ME.p.y), MAP.getZoom(), { animate: false }); return true; },
     center: (id, dy) => { const m = MK[id]; if (!m) return false; MAP.stop(); const q = MAP.latLngToContainerPoint(m.m.getLatLng()); const s2 = MAP.getSize(); MAP.panBy([q.x - s2.x / 2, q.y - (s2.y * .45 + (dy || 0))], { animate: false }); declutter(); return true; },
-    markers: () => Object.keys(MK), incoming: () => { INC_DONE = false; showIncoming(PEOPLE[0]); } }
+    markers: () => Object.keys(MK), incoming: () => { INC_DONE = false; showIncoming(PEOPLE[0]); } },
+  /* GDD v1 hooks (QA + host) */
+  gdd: { state: () => JSON.parse(JSON.stringify(gdd())), quest: id => questModel(id || (activeTask() || {}).id), openQuest: id => openQuest(id), next: id => questNext(id), reset: id => resetQuest(id || (activeTask() || {}).id),
+    pause: (id, on) => pauseQuest(id || (activeTask() || {}).id, on !== false), unstuck: () => unstuck(), services: () => services(), svc: id => svc(id), setService: (id, p) => svcSet(id, p), addService: o => svcAdd(o),
+    openServices: () => openServices(), dialogue: id => openDialogue(id), onboarding: () => { const g = gdd(); g.onb = 0; g.firstWin = 0; save(); onbStart(); }, skipOnboarding: () => { if (ONB) onbSkip(); else { gdd().onb = 1; save(); } },
+    modal: o => modal(o), toast: (h, k) => toast(h, k), banner: (h, o) => banner(h, o), kbSim: px => kbSim(px), vv: () => vvNow(), debug: () => openDebug(), layers: () => ({ sheets: SHEETS.map(s => s.id), modal: MODAL, queue: MQ.map(x => x.id), onb: ONB ? ONB.i : null, tour: !!TOUR, pop: !!POP }),
+    stepNext: () => DBG.stepNext(), stepBack: () => DBG.stepBack(), energy: () => ({ energy: gdd().energy, trust: gdd().trust, speed: energySpeed() }), form: () => DBG.form(), revealAll: () => { OPT.revealAll = true; navDisclose(); } }
 };
 window.URUWorld = API;
 
